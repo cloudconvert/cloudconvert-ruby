@@ -1,4 +1,5 @@
 .bundle
+.env
 .rspec_status
 .yardoc
 /bin
