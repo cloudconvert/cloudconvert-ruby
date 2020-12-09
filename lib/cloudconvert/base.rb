@@ -49,6 +49,8 @@ module CloudConvert
         define_method(key1) do
           if @attrs[key1].nil?
             NullObject.new
+          elsif key1 === :operation || key1 === :status
+            @attrs[key1].to_sym
           elsif @attrs[key1].is_a? Hash
             OpenStruct.new(@attrs[key1])
           elsif key1.end_with?("_at")
