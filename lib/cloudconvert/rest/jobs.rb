@@ -41,7 +41,7 @@ module CloudConvert
       # @param id [String]
       # @return [CloudConvert::Job]
       def wait_for_job(id)
-        perform_get_with_object("/jobs/#{id}/wait", options, CloudConvert::Job)
+        perform_get_with_object("/jobs/#{id}/wait", {}, CloudConvert::Job)
       end
 
       # @param id [String]
