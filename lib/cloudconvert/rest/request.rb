@@ -1,9 +1,9 @@
 require "addressable/uri"
+require "cloudconvert/error"
 require "http"
 require "http/form_data"
 require "json"
 require "openssl"
-require "cloudconvert/error"
 
 module CloudConvert
   module REST
