@@ -24,9 +24,11 @@ module CloudConvert
       # @return [CloudConvert::Job]
       def create_job(options)
         schema = Schemacop::Schema.new do
-          req :tasks, :array, min: 1 do
-            type :hash do
-              req :operation, :string
+          type :hash, allow_obsolete_keys: true do
+            req :tasks, :array, min: 1 do
+              type :hash, allow_obsolete_keys: true do
+                req :operation, :string
+              end
             end
           end
         end
