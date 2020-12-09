@@ -1,11 +1,11 @@
 require "cloudconvert/error"
 require "cloudconvert/rest/api"
 require "cloudconvert/version"
+require "schemacop"
 
 module CloudConvert
   class Client
     include CloudConvert::REST::API
-    include CloudConvert::Version
 
     attr_accessor :api_key, :base_url, :proxy, :sandbox, :timeouts, :user_agent
 
@@ -22,6 +22,13 @@ module CloudConvert
       end
 
       yield(self) if block_given?
+
+      schema = Schemacop::Schema.new do
+        req! :api_key, :string
+        opt! :sandbox, :boolean, default: false
+      end
+
+      schema.validate!({ api_key: @api_key, sandbox: @sandbox }.compact)
     end
 
     # @return [String]
