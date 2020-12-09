@@ -3,8 +3,8 @@ require "spec_helper"
 describe CloudConvert::User do
   describe "#==" do
     it "returns true when objects IDs are the same" do
-      user = CloudConvert::User.new(id: 1, screen_name: "foo")
-      other = CloudConvert::User.new(id: 1, screen_name: "bar")
+      user = CloudConvert::User.new(id: 1, username: "foo")
+      other = CloudConvert::User.new(id: 1, username: "bar")
       expect(user == other).to be true
     end
     it "returns false when objects IDs are different" do

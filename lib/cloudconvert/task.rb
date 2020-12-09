@@ -3,7 +3,7 @@ require "cloudconvert/entity"
 module CloudConvert
   class Task < CloudConvert::Entity
     # @return [String]
-    attr_reader :id, :name, :operation, :job_id, :status, :message, :code
+    attr_reader :id, :operation, :job_id, :status, :message, :code
 
     # @return [Array<CloudConvert::Task>]
     attr_reader :depends_on_tasks
