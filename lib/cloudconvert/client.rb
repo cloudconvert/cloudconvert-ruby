@@ -27,9 +27,9 @@ module CloudConvert
     # @return [String]
     def base_url
       if sandbox
-        @base_url ||= "https://api.sandbox.cloudconvert.com/v2"
+        @base_url ||= CloudConvert::SANDBOX_V2
       else
-        @base_url ||= "https://api.cloudconvert.com/v2"
+        @base_url ||= CloudConvert::API_V2
       end
     end
 
