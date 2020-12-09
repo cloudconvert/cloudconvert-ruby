@@ -65,10 +65,11 @@ module CloudConvert
       # @param key1 [Symbol]
       # @param key2 [Symbol]
       def define_predicate_method(key1, key2 = key1)
-        define_method(:"#{key1}?") do
+        predicate = key1.to_s.gsub(/_at$/, "")
+        define_method(:"#{predicate}?") do
           !attr_falsey_or_empty?(key2)
         end
-        memoize(:"#{key1}?")
+        memoize(:"#{predicate}?")
       end
     end
 
