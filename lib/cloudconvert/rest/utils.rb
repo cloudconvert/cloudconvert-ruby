@@ -21,7 +21,7 @@ module CloudConvert
       # @param path [String]
       # @param options [Hash]
       def perform_delete(path, options = {})
-        perform_request(:delete, path, options)
+        perform_request(:delete, path, options) && nil
       end
 
       # @param request_method [Symbol]

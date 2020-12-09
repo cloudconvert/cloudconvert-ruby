@@ -38,8 +38,8 @@ module CloudConvert
 
       # @param options [Hash]
       # @return [CloudConvert::Task]
-      def cancel_task(id, options)
-        perform_post_with_object("/tasks/#{id}/cancel", options, CloudConvert::Task)
+      def cancel_task(id)
+        perform_post_with_object("/tasks/#{id}/cancel", {}, CloudConvert::Task)
       end
 
       # @param id [String]
@@ -50,14 +50,14 @@ module CloudConvert
 
       # @param options [Hash]
       # @return [CloudConvert::Task]
-      def retry_task(id, options)
-        perform_post_with_object("/tasks/#{id}/retry", options, CloudConvert::Task)
+      def retry_task(id)
+        perform_post_with_object("/tasks/#{id}/retry", {}, CloudConvert::Task)
       end
 
       # @param id [String]
       # @return [CloudConvert::Task]
       def wait_for_task(id)
-        perform_get_with_object("/tasks/#{id}/wait", CloudConvert::Task)
+        perform_get_with_object("/tasks/#{id}/wait", {}, CloudConvert::Task)
       end
 
       # @param options [Hash]
