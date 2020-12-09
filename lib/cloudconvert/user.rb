@@ -9,12 +9,12 @@ module CloudConvert
     attr_reader :username, :email
 
     # @return [Boolean]
-    attr_reader :paying
-
-    # @return [Time]
-    attr_reader :created_at
+    predicate_attr_reader :paying
 
     # @return [OpenStruct]
-    attr_reader :links
+    struct_attr_reader :links
+
+    # @return [Time]
+    time_attr_reader :created_at
   end
 end

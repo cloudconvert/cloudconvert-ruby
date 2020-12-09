@@ -3,15 +3,18 @@ require "cloudconvert/entity"
 module CloudConvert
   class Job < CloudConvert::Entity
     # @return [String]
-    attr_reader :id, :status, :tag
+    attr_reader :id, :tag
 
-    # @return [Array<CloudConvert::Task>]
-    attr_reader :tasks
+    # @return [Symbol]
+    symbol_attr_reader :status
+
+    # @return [CloudConvert::Collection<CloudConvert::Task>]
+    collection_attr_reader :Task, :tasks
 
     # @return [OpenStruct]
-    attr_reader :links
+    struct_attr_reader :links
 
     # @return [Time]
-    attr_reader :created_at, :started_at, :ended_at
+    time_attr_reader :created_at, :started_at, :ended_at
   end
 end

@@ -24,8 +24,13 @@ module CloudConvert
         end
       end
 
-      def predicate_attr_reader(*attrs)
+      # Define collection methods from attributes
+      #
+      # @param klass [Symbol]
+      # @param attrs [Array, Symbol]
+      def collection_attr_reader(klass, *attrs)
         attrs.each do |attr|
+          define_collection_method(attr, klass)
           define_predicate_method(attr)
         end
       end
@@ -33,33 +38,76 @@ module CloudConvert
       # Define object methods from attributes
       #
       # @param klass [Symbol]
-      # @param key1 [Symbol]
-      # @param key2 [Symbol]
-      def object_attr_reader(klass, key1, key2 = nil)
-        define_attribute_method(key1, klass, key2)
-        define_predicate_method(key1)
+      # @param attrs [Array, Symbol]
+      def object_attr_reader(klass, *attrs)
+        attrs.each do |attr|
+          define_object_method(attr)
+          define_predicate_method(attr)
+        end
       end
+
+      # Define predicate methods from attributes
+      #
+      # @param attrs [Array, Symbol]
+      def predicate_attr_reader(*attrs)
+        attrs.each do |attr|
+          define_predicate_method(attr)
+        end
+      end
+
+      # Define struct methods from attributes
+      #
+      # @param attrs [Array, Symbol]
+      def struct_attr_reader(*attrs)
+        attrs.each do |attr|
+          define_struct_method(attr)
+          define_predicate_method(attr)
+        end
+      end
+
+      # Define symbol methods from attributes
+      #
+      # @param attrs [Array, Symbol]
+      def symbol_attr_reader(*attrs)
+        attrs.each do |attr|
+          define_symbol_method(attr)
+        end
+      end
+
+      # Define time methods from attributes
+      #
+      # @param attrs [Array, Symbol]
+      def time_attr_reader(*attrs)
+        attrs.each do |attr|
+          define_time_method(attr)
+          define_predicate_method(attr.to_s.gsub(/_at$/, ""), attr)
+        end
+      end
+
+      private
 
       # Dynamically define a method for an attribute
       #
-      # @param key1 [Symbol]
+      # @param key [Symbol]
       # @param klass [Symbol]
-      # @param key2 [Symbol]
-      def define_attribute_method(key1, klass = nil, key2 = nil)
-        define_method(key1) do
-          if @attrs[key1].nil?
-            NullObject.new
-          elsif key1 === :operation || key1 === :status
-            @attrs[key1].to_sym
-          elsif @attrs[key1].is_a? Hash
-            OpenStruct.new(@attrs[key1])
-          elsif key1.end_with?("_at")
-            Time.parse(@attrs[key1]).utc
-          else
-            klass.nil? ? @attrs[key1] : CloudConvert.const_get(klass).new(attrs_for_object(key1, key2))
-          end
+      def define_attribute_method(key)
+        define_method(key) do
+          @attrs[key]
         end
-        memoize(key1)
+        memoize(key)
+      end
+
+      # Dynamically define a collection method for an attribute
+      #
+      # @param key [Symbol]
+      # @param klass [Symbol]
+      def define_collection_method(key, klass)
+        define_method(key) do
+          collection = @attrs[key] || []
+          entity = CloudConvert.const_get(klass)
+          collection.map { |item| entity.new(item) }
+        end
+        memoize(key)
       end
 
       # Dynamically define a predicate method for an attribute
@@ -67,11 +115,50 @@ module CloudConvert
       # @param key1 [Symbol]
       # @param key2 [Symbol]
       def define_predicate_method(key1, key2 = key1)
-        predicate = key1.to_s.gsub(/_at$/, "")
-        define_method(:"#{predicate}?") do
+        define_method(:"#{key1}?") do
           !attr_falsey_or_empty?(key2)
         end
-        memoize(:"#{predicate}?")
+        memoize(:"#{key1}?")
+      end
+
+      # Dynamically define a object method for an attribute
+      #
+      # @param key [Symbol]
+      def define_object_method(key, klass)
+        define_method(key) do
+          CloudConvert.const_get(klass).new(@attrs[key])
+        end
+        memoize(key)
+      end
+
+      # Dynamically define a struct method for an attribute
+      #
+      # @param key [Symbol]
+      def define_struct_method(key)
+        define_method(key) do
+          OpenStruct.new(@attrs[key]) unless @attrs[key].nil?
+        end
+        memoize(key)
+      end
+
+      # Dynamically define a symbol method for an attribute
+      #
+      # @param key [Symbol]
+      def define_symbol_method(key)
+        define_method(key) do
+          @attrs[key].to_sym unless @attrs[key].nil?
+        end
+        memoize(key)
+      end
+
+      # Dynamically define a time method for an attribute
+      #
+      # @param key [Symbol]
+      def define_time_method(key)
+        define_method(key) do
+          Time.parse(@attrs[key]).utc unless @attrs[key].nil?
+        end
+        memoize(key)
       end
     end
 
@@ -87,15 +174,6 @@ module CloudConvert
 
     def attr_falsey_or_empty?(key)
       !@attrs[key] || @attrs[key].respond_to?(:empty?) && @attrs[key].empty?
-    end
-
-    def attrs_for_object(key1, key2 = nil)
-      if key2.nil?
-        @attrs[key1]
-      else
-        attrs = @attrs.dup
-        attrs.delete(key1).merge(key2 => attrs)
-      end
     end
   end
 end
