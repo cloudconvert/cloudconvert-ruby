@@ -1,3 +1,4 @@
+require "cloudconvert/collection"
 require "cloudconvert/rest/request"
 
 module CloudConvert
@@ -72,9 +73,13 @@ module CloudConvert
       # @param options [Hash]
       # @param klass [Class]
       def perform_request_with_objects(request_method, path, options, klass)
-        perform_request(request_method, path, options)[:data].collect do |element|
-          klass.new(element)
-        end
+        response = perform_request(request_method, path, options)
+
+        Collection.new(
+          response[:data].collect { |element| klass.new(element) },
+          response[:links],
+          response[:meta],
+        )
       end
     end
   end
