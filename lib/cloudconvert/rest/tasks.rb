@@ -25,8 +25,10 @@ module CloudConvert
       # @return [CloudConvert::Task]
       def create_task(options = {})
         schema = Schemacop::Schema.new do
-          req :operation, :string
-          req :input, :string unless options[:operation].nil? || options[:operation].start_with?("import")
+          type :hash, allow_obsolete_keys: true do
+            req :operation, :string
+            req :input, :string unless options[:operation].nil? || options[:operation].start_with?("import")
+          end
         end
 
         schema.validate! options
