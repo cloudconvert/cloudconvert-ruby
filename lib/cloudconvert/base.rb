@@ -1,4 +1,5 @@
 require "addressable/uri"
+require "cloudconvert/null_object"
 require "forwardable"
 require "memoizable"
 require "ostruct"
@@ -46,7 +47,9 @@ module CloudConvert
       # @param key2 [Symbol]
       def define_attribute_method(key1, klass = nil, key2 = nil)
         define_method(key1) do
-          if @attrs[key1].is_a? Hash
+          if @attrs[key1].nil?
+            NullObject.new
+          elsif @attrs[key1].is_a? Hash
             OpenStruct.new(@attrs[key1])
           elsif key1.end_with?("_at")
             Time.parse(@attrs[key1]).utc

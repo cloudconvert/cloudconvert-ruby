@@ -13,10 +13,15 @@ Gem::Specification.new do |spec|
   spec.require_paths = %w[lib]
   spec.required_ruby_version = ">= 2.7"
   spec.add_dependency "addressable", "~> 2.3"
+  spec.add_dependency "equalizer"
   spec.add_dependency "forwardable"
   spec.add_dependency "http", "~> 4.0"
   spec.add_dependency "http-form_data", "~> 2.0"
+  spec.add_dependency "json"
   spec.add_dependency "memoizable", "~> 0.4.0"
   spec.add_dependency "multipart-post", "~> 2.0"
+  spec.add_dependency "naught", "~> 1.0"
+  spec.add_dependency "openssl"
+  spec.add_dependency "ostruct"
   spec.add_dependency "schemacop", "~> 2.4"
 end
