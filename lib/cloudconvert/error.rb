@@ -3,6 +3,9 @@ module CloudConvert
     # @return [Integer]
     attr_reader :code
 
+    # @return [Hash]
+    attr_reader :errors
+
     # Raised when CloudConvert returns a 4xx HTTP status code
     ClientError = Class.new(self)
 
@@ -92,8 +95,8 @@ module CloudConvert
       # @param headers [Hash]
       # @return [CloudConvert::Error]
       def from_response(body, headers)
-        message, code = parse_error(body)
-        new(message, headers, code)
+        message, code, errors = parse_error(body)
+        new(message, code, errors)
       end
 
       # Create a new error from a media error hash
@@ -111,22 +114,7 @@ module CloudConvert
       private
 
       def parse_error(body)
-        if body.nil? || body.empty?
-          ["", nil]
-        elsif body[:error]
-          [body[:error], nil]
-        elsif body[:errors]
-          extract_message_from_errors(body)
-        end
-      end
-
-      def extract_message_from_errors(body)
-        first = Array(body[:errors]).first
-        if first.is_a?(Hash)
-          [first[:message].chomp, first[:code]]
-        else
-          [first.chomp, nil]
-        end
+        [body[:message], body[:code], body[:errors]]
       end
     end
 
@@ -135,10 +123,11 @@ module CloudConvert
     # @param message [Exception, String]
     # @param code [Integer]
     # @return [CloudConvert::Error]
-    def initialize(message = "", headers = {}, code = nil)
+    def initialize(message = "", code = nil, errors = {})
       super(message)
 
       @code = code
+      @errors = errors
     end
   end
 end
