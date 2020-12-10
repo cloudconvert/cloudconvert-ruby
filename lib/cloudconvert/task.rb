@@ -21,5 +21,25 @@ module CloudConvert
 
     # @return [Time]
     time_attr_reader :created_at, :started_at, :ended_at
+
+    # @return [Boolean]
+    def error?
+      status == :error
+    end
+
+    # @return [Boolean]
+    def finished?
+      status == :finished
+    end
+
+    # @return [Boolean]
+    def processing?
+      status == :processing
+    end
+
+    # @return [Boolean]
+    def waiting?
+      status == :waiting
+    end
   end
 end
