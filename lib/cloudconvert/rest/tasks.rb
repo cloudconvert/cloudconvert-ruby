@@ -60,19 +60,19 @@ module CloudConvert
         perform_get_with_object("/tasks/#{id}/wait", {}, CloudConvert::Task)
       end
 
-      # @param options [Hash]
-      # @param file [String, Resource, Stream]
+      # @param task [CloudConvert::Task]
+      # @param file [File]
       # @return [Response]
       def upload(task, file)
-        if task.operation != "import/upload"
-          # raise BadMethodCallException("The task operation is not import/upload")
+        unless task.operation == "import/upload"
+          raise ArgumentError.new("The task operation is not import/upload")
         end
 
-        if task.status != Task::STATUS_WATING || !task.result || !task.result.form
-          # raise BadMethodCallException("The task is not ready for uploading")
+        unless task.result && task.result.form && task.waiting?
+          raise ArgumentError.new("The task is not ready for uploading")
         end
 
-        client.upload(task.result.form.url, file, task.result.form.parameters || {})
+        perform_request(:multipart_post, task.result.form[:url], task.result.form[:parameters] || {}, file: file)
       end
     end
   end
