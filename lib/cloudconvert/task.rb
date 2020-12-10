@@ -3,7 +3,7 @@ require "cloudconvert/entity"
 module CloudConvert
   class Task < CloudConvert::Entity
     # @return [String]
-    attr_reader :id, :operation, :message, :code,
+    attr_reader :id, :name, :operation, :message, :code,
                 :engine, :engine_version, :host_name, :storage,
                 :job_id, :copy_of_task_id, :retry_of_task_id
 

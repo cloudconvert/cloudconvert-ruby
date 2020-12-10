@@ -118,6 +118,7 @@ describe CloudConvert::REST::Tasks do
         expect(subject.message).to be_nil
         expect(subject.percent).to be 100
         expect(subject.depends_on_tasks.count).to eq 0
+        expect(subject.depends_on_tasks?).to be false
         expect(subject.payload).to eq OpenStruct.new({ name: "test", url: "http://invalid.url", filename: "test.file" })
         expect(subject.result).to be_nil
         expect(subject.created_at).to eq Time.parse("2019-05-31T23:52:39+00:00").utc

@@ -35,7 +35,13 @@ module CloudConvert
 
         schema.validate! options
 
-        perform_post_with_object("/jobs", options, CloudConvert::Job)
+        payload = options.dup
+
+        payload[:tasks] = payload[:tasks].to_h do |task|
+          [task[:name], task.reject { |k| k === :name }]
+        end
+
+        perform_post_with_object("/jobs", payload, CloudConvert::Job)
       end
 
       # @param id [String]
