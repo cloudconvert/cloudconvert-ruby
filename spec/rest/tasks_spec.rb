@@ -94,10 +94,10 @@ describe CloudConvert::REST::Tasks do
       before do
         stub_post("/import/url")
           .with(body: { name: "test", operation: "import/url", filename: "test.file", url: "http://invalid.url" })
-          .to_return(
+          .to_return({
             status: 201,
             body: fixture("responses/task_created.json"),
-            headers: { content_type: "application/json",
+            headers: { content_type: "application/json" },
           })
       end
 
