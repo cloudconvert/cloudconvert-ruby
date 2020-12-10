@@ -7,7 +7,7 @@ describe CloudConvert::REST::Users do
 
   describe "#user" do
     before do
-      stub_get("/users/me").to_return(body: fixture("responses/user.json"), headers: { content_type: "application/json" })
+      stub_get("/v2/users/me").to_return(body: fixture("responses/user.json"), headers: { content_type: "application/json" })
     end
 
     subject! do
@@ -15,7 +15,7 @@ describe CloudConvert::REST::Users do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/users/me")).to have_been_made
+      expect(a_get("/v2/users/me")).to have_been_made
     end
 
     it "returns extended information of a given user" do

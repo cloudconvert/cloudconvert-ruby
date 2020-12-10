@@ -1,5 +1,3 @@
-require "addressable/uri"
-require "cloudconvert/null_object"
 require "forwardable"
 require "memoizable"
 require "ostruct"

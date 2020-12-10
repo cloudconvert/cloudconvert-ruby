@@ -7,7 +7,7 @@ describe CloudConvert::REST::Tasks do
 
   describe "#task" do
     before do
-      stub_get("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return(body: fixture("responses/task.json"), headers: { content_type: "application/json" })
+      stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return(body: fixture("responses/task.json"), headers: { content_type: "application/json" })
     end
 
     subject! do
@@ -15,7 +15,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")).to have_been_made
+      expect(a_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")).to have_been_made
     end
 
     it "returns extended information of a given task" do
@@ -41,7 +41,7 @@ describe CloudConvert::REST::Tasks do
 
   describe "#tasks" do
     before do
-      stub_get("/tasks").to_return(body: fixture("responses/tasks.json"), headers: { content_type: "application/json" })
+      stub_get("/v2/tasks").to_return(body: fixture("responses/tasks.json"), headers: { content_type: "application/json" })
     end
 
     subject! do
@@ -49,7 +49,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/tasks")).to have_been_made
+      expect(a_get("/v2/tasks")).to have_been_made
     end
 
     it "returns extended information of a given task" do
@@ -92,7 +92,7 @@ describe CloudConvert::REST::Tasks do
   describe "#create_task" do
     context "import/url" do
       before do
-        stub_post("/import/url")
+        stub_post("/v2/import/url")
           .with(body: { name: "test", operation: "import/url", filename: "test.file", url: "http://invalid.url" })
           .to_return({
             status: 201,
@@ -106,7 +106,7 @@ describe CloudConvert::REST::Tasks do
       end
 
       it "requests the correct resource" do
-        expect(a_post("/import/url")).to have_been_made
+        expect(a_post("/v2/import/url")).to have_been_made
       end
 
       it "returns extended information of a given task" do
@@ -134,7 +134,7 @@ describe CloudConvert::REST::Tasks do
 
   describe "#cancel_task" do
     before do
-      stub_post("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/cancel").to_return({
+      stub_post("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/cancel").to_return({
         body: fixture("responses/task.json"),
         headers: { content_type: "application/json" },
       })
@@ -145,7 +145,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     it "requests the correct resource" do
-      expect(a_post("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/cancel")).to have_been_made
+      expect(a_post("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/cancel")).to have_been_made
     end
 
     it "returns the task" do
@@ -156,7 +156,7 @@ describe CloudConvert::REST::Tasks do
 
   describe "#delete_task" do
     before do
-      stub_delete("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return({ status: 204 })
+      stub_delete("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return({ status: 204 })
     end
 
     subject! do
@@ -164,7 +164,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     it "requests the correct resource" do
-      expect(a_delete("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")).to have_been_made
+      expect(a_delete("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")).to have_been_made
     end
 
     it "returns nil" do
@@ -174,7 +174,7 @@ describe CloudConvert::REST::Tasks do
 
   describe "#retry_task" do
     before do
-      stub_post("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/retry").to_return({
+      stub_post("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/retry").to_return({
         body: fixture("responses/task.json"),
         headers: { content_type: "application/json" },
       })
@@ -185,7 +185,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     it "requests the correct resource" do
-      expect(a_post("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/retry")).to have_been_made
+      expect(a_post("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/retry")).to have_been_made
     end
 
     it "returns the new task" do
@@ -195,7 +195,7 @@ describe CloudConvert::REST::Tasks do
 
   describe "#wait_for_task" do
     before do
-      stub_get("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait").to_return({
+      stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait").to_return({
         body: fixture("responses/task.json"),
         headers: { content_type: "application/json" },
       })
@@ -206,7 +206,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait")).to have_been_made
+      expect(a_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait")).to have_been_made
     end
 
     it "returns the task" do

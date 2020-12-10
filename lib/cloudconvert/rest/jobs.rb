@@ -1,28 +1,25 @@
-require "cloudconvert/rest/utils"
 require "cloudconvert/job"
 require "schemacop"
 
 module CloudConvert
   module REST
     module Jobs
-      include CloudConvert::REST::Utils
-
       # @param id [String]
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [CloudConvert::Job]
-      def job(id, options = {})
-        perform_get_with_object("/jobs/#{id}", options, CloudConvert::Job)
+      def job(id, params = {})
+        CloudConvert::Job.result(send_request(:get, "/v2/jobs/#{id}", params))
       end
 
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [Array<CloudConvert::Job>]
-      def jobs(options = {})
-        perform_get_with_objects("/jobs", options, CloudConvert::Job)
+      def jobs(params = {})
+        CloudConvert::Job.collection(send_request(:get, "/v2/jobs", params))
       end
 
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [CloudConvert::Job]
-      def create_job(options)
+      def create_job(params)
         schema = Schemacop::Schema.new do
           type :hash, allow_obsolete_keys: true do
             req :tasks, :array, min: 1 do
@@ -33,27 +30,27 @@ module CloudConvert
           end
         end
 
-        schema.validate! options
+        schema.validate! params
 
-        payload = options.dup
+        payload = params.dup
 
         payload[:tasks] = payload[:tasks].to_h do |task|
           [task[:name], task.reject { |k| k === :name }]
         end
 
-        perform_post_with_object("/jobs", payload, CloudConvert::Job)
+        CloudConvert::Job.result(send_request(:post, "/v2/jobs", payload))
       end
 
       # @param id [String]
       # @return [CloudConvert::Job]
       def wait_for_job(id)
-        perform_get_with_object("/jobs/#{id}/wait", {}, CloudConvert::Job)
+        CloudConvert::Job.result(send_request(:get, "/v2/jobs/#{id}/wait", {}))
       end
 
       # @param id [String]
       # @return [void]
       def delete_job(id)
-        perform_delete("/jobs/#{id}")
+        send_request(:delete, "/v2/jobs/#{id}")
       end
     end
   end

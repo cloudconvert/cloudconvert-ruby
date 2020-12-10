@@ -1,63 +1,60 @@
-require "cloudconvert/rest/utils"
 require "cloudconvert/task"
 require "schemacop"
 
 module CloudConvert
   module REST
     module Tasks
-      include CloudConvert::REST::Utils
-
       # @param id [String]
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [CloudConvert::Task]
-      def task(id, options = {})
-        perform_get_with_object("/tasks/#{id}", options, CloudConvert::Task)
+      def task(id, params = {})
+        CloudConvert::Task.result(send_request(:get, "/v2/tasks/#{id}", params))
       end
 
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [Array<CloudConvert::Task>]
-      def tasks(options = {})
-        perform_get_with_objects("/tasks", options, CloudConvert::Task)
+      def tasks(params = {})
+        CloudConvert::Task.collection(send_request(:get, "/v2/tasks", params))
       end
 
       # @param operation [String]
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [CloudConvert::Task]
-      def create_task(options = {})
+      def create_task(params = {})
         schema = Schemacop::Schema.new do
           type :hash, allow_obsolete_keys: true do
             req :operation, :string
-            req :input, :string unless options[:operation].nil? || options[:operation].start_with?("import")
+            req :input, :string unless params[:operation].nil? || params[:operation].start_with?("import")
           end
         end
 
-        schema.validate! options
+        schema.validate! params
 
-        perform_post_with_object("/#{options[:operation]}", options, CloudConvert::Task)
+        CloudConvert::Task.result(send_request(:post, "/v2/#{params[:operation]}", params))
       end
 
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [CloudConvert::Task]
       def cancel_task(id)
-        perform_post_with_object("/tasks/#{id}/cancel", {}, CloudConvert::Task)
+        CloudConvert::Task.result(send_request(:post, "/v2/tasks/#{id}/cancel"))
       end
 
       # @param id [String]
       # @return [void]
       def delete_task(id)
-        perform_delete("/tasks/#{id}")
+        send_request(:delete, "/v2/tasks/#{id}")
       end
 
-      # @param options [Hash]
+      # @param params [Hash]
       # @return [CloudConvert::Task]
       def retry_task(id)
-        perform_post_with_object("/tasks/#{id}/retry", {}, CloudConvert::Task)
+        CloudConvert::Task.result(send_request(:post, "/v2/tasks/#{id}/retry"))
       end
 
       # @param id [String]
       # @return [CloudConvert::Task]
       def wait_for_task(id)
-        perform_get_with_object("/tasks/#{id}/wait", {}, CloudConvert::Task)
+        CloudConvert::Task.result(send_request(:get, "/v2/tasks/#{id}/wait"))
       end
 
       # @param task [CloudConvert::Task]
@@ -72,7 +69,7 @@ module CloudConvert
           raise ArgumentError.new("The task is not ready for uploading")
         end
 
-        perform_request(:multipart_post, task.result.form[:url], task.result.form[:parameters] || {}, file: file)
+        send_request(:post, task.result.form.url, task.result.form.parameters.dup.merge(file: file))
       end
     end
   end

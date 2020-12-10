@@ -1,4 +1,5 @@
 require "spec_helper"
+require "securerandom"
 
 describe CloudConvert::Task do
   id1 = SecureRandom.uuid, id2 = SecureRandom.uuid

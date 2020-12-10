@@ -12,6 +12,7 @@ group :test do
   gem "coveralls", "~> 0.8.23"
   gem "rspec", "~> 3.0"
   gem "rubocop", "~> 1.5"
+  gem "securerandom"
   gem "simplecov", "~> 0.16"
   gem "webmock"
   gem "yardstick"

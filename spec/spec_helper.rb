@@ -17,35 +17,35 @@ RSpec.configure do |config|
 end
 
 def a_delete(path)
-  a_request(:delete, CloudConvert::API_V2 + path)
+  a_request(:delete, CloudConvert::API_URL + path)
 end
 
 def a_get(path)
-  a_request(:get, CloudConvert::API_V2 + path)
+  a_request(:get, CloudConvert::API_URL + path)
 end
 
 def a_post(path)
-  a_request(:post, CloudConvert::API_V2 + path)
+  a_request(:post, CloudConvert::API_URL + path)
 end
 
 def a_put(path)
-  a_request(:put, CloudConvert::API_V2 + path)
+  a_request(:put, CloudConvert::API_URL + path)
 end
 
 def stub_delete(path)
-  stub_request(:delete, CloudConvert::API_V2 + path)
+  stub_request(:delete, CloudConvert::API_URL + path)
 end
 
 def stub_get(path)
-  stub_request(:get, CloudConvert::API_V2 + path)
+  stub_request(:get, CloudConvert::API_URL + path)
 end
 
 def stub_post(path)
-  stub_request(:post, CloudConvert::API_V2 + path)
+  stub_request(:post, CloudConvert::API_URL + path)
 end
 
 def stub_put(path)
-  stub_request(:put, CloudConvert::API_V2 + path)
+  stub_request(:put, CloudConvert::API_URL + path)
 end
 
 def fixture_path

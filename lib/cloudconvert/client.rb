@@ -1,6 +1,9 @@
 require "cloudconvert/error"
 require "cloudconvert/rest/api"
 require "cloudconvert/version"
+require "faraday"
+require "json"
+require "ostruct"
 require "schemacop"
 
 module CloudConvert
@@ -29,20 +32,38 @@ module CloudConvert
       end
 
       schema.validate!({ api_key: @api_key, sandbox: @sandbox }.compact)
+
+      @client = Faraday.new({
+        url: base_url,
+        headers: {
+          "Authorization" => "Bearer #{api_key}",
+          "User-Agent" => user_agent,
+        },
+      })
     end
 
     # @return [String]
     def base_url
       if sandbox
-        @base_url ||= CloudConvert::SANDBOX_V2
+        @base_url ||= CloudConvert::SANDBOX_URL
       else
-        @base_url ||= CloudConvert::API_V2
+        @base_url ||= CloudConvert::API_URL
       end
+    end
+
+    # @param method [Symbol]
+    # @param path [String]
+    # @param params [Hash]
+    # @return [Faraday::Response]
+    def send_request(method, path, params = {})
+      params[:file] = Faraday::FilePart.new(params[:file]) unless params[:file].nil?
+      response = @client.public_send(method, path, params)
+      JSON.parse(response.body, object_class: OpenStruct) unless response.body.blank?
     end
 
     # @return [String]
     def user_agent
-      @user_agent ||= "CloudConvertRubyGem/#{CloudConvert::Version}"
+      @user_agent ||= "CloudConvertRubyGem/#{CloudConvert::VERSION}"
     end
   end
 end

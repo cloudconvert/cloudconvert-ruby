@@ -7,7 +7,7 @@ describe CloudConvert::REST::Jobs do
 
   describe "#job" do
     before do
-      stub_get("/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7").to_return(body: fixture("responses/job.json"), headers: { content_type: "application/json" })
+      stub_get("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7").to_return(body: fixture("responses/job.json"), headers: { content_type: "application/json" })
     end
 
     subject! do
@@ -15,7 +15,7 @@ describe CloudConvert::REST::Jobs do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7")).to have_been_made
+      expect(a_get("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7")).to have_been_made
     end
 
     it "returns extended information of a given job" do
@@ -52,7 +52,7 @@ describe CloudConvert::REST::Jobs do
 
   describe "#jobs" do
     before do
-      stub_get("/jobs").to_return(body: fixture("responses/jobs.json"), headers: { content_type: "application/json" })
+      stub_get("/v2/jobs").to_return(body: fixture("responses/jobs.json"), headers: { content_type: "application/json" })
     end
 
     subject! do
@@ -60,7 +60,7 @@ describe CloudConvert::REST::Jobs do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/jobs")).to have_been_made
+      expect(a_get("/v2/jobs")).to have_been_made
     end
 
     it "returns extended information of a given job" do
@@ -98,7 +98,7 @@ describe CloudConvert::REST::Jobs do
 
   describe "#create_job" do
     before do
-      stub_post("/jobs")
+      stub_post("/v2/jobs")
         .with({
           body: {
             tasks: {
@@ -124,7 +124,7 @@ describe CloudConvert::REST::Jobs do
     end
 
     it "requests the correct resource" do
-      expect(a_post("/jobs")).to have_been_made
+      expect(a_post("/v2/jobs")).to have_been_made
     end
 
     it "returns extended information of a given job" do
@@ -154,7 +154,7 @@ describe CloudConvert::REST::Jobs do
 
   describe "#delete_job" do
     before do
-      stub_delete("/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7").to_return({ status: 204 })
+      stub_delete("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7").to_return({ status: 204 })
     end
 
     subject! do
@@ -162,7 +162,7 @@ describe CloudConvert::REST::Jobs do
     end
 
     it "requests the correct resource" do
-      expect(a_delete("/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7")).to have_been_made
+      expect(a_delete("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7")).to have_been_made
     end
 
     it "returns nil" do
@@ -172,7 +172,7 @@ describe CloudConvert::REST::Jobs do
 
   describe "#wait_for_job" do
     before do
-      stub_get("/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7/wait").to_return({
+      stub_get("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7/wait").to_return({
         body: fixture("responses/job.json"),
         headers: { content_type: "application/json" },
       })
@@ -183,7 +183,7 @@ describe CloudConvert::REST::Jobs do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7/wait")).to have_been_made
+      expect(a_get("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7/wait")).to have_been_made
     end
 
     it "returns the job" do
