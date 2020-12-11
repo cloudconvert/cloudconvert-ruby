@@ -1,51 +1,15 @@
-require "spec_helper"
-
-describe CloudConvert::REST::Tasks do
+describe CloudConvert::Resources::Tasks do
   before do
     @client = CloudConvert::Client.new(api_key: "test key")
   end
 
-  describe "#task" do
-    before do
-      stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return(body: fixture("responses/task.json"), headers: { content_type: "application/json" })
-    end
-
-    subject! do
-      @client.task("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
-    end
-
-    it "requests the correct resource" do
-      expect(a_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")).to have_been_made
-    end
-
-    it "returns extended information of a given task" do
-      expect(subject).to be_a CloudConvert::Task
-      expect(subject.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
-      expect(subject.status).to be :error
-      expect(subject.code).to eq "INPUT_TASK_FAILED"
-      expect(subject.message).to eq "Input task has failed"
-      expect(subject.depends_on_tasks.count).to eq 1
-      expect(subject.depends_on_tasks[0]).to be_a CloudConvert::Task
-      expect(subject.depends_on_tasks[0].id).to eq "6df0920a-7042-4e87-be52-f38a0a29a67e"
-      expect(subject.depends_on_tasks[0].status).to be :error
-      expect(subject.depends_on_tasks?).to be true
-      expect(subject.created_at).to eq Time.parse("2019-05-30T10:53:01+00:00").utc
-      expect(subject.created?).to be true
-      expect(subject.started_at).to be_nil
-      expect(subject.started?).to be false
-      expect(subject.ended_at).to eq Time.parse("2019-05-30T10:53:23+00:00").utc
-      expect(subject.ended?).to be true
-      expect(subject.links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
-    end
-  end
-
-  describe "#tasks" do
+  describe "#all" do
     before do
       stub_get("/v2/tasks").to_return(body: fixture("responses/tasks.json"), headers: { content_type: "application/json" })
     end
 
     subject! do
-      @client.tasks
+      @client.tasks.all
     end
 
     it "requests the correct resource" do
@@ -89,7 +53,7 @@ describe CloudConvert::REST::Tasks do
     end
   end
 
-  describe "#create_task" do
+  describe "#create" do
     context "import/url" do
       before do
         stub_post("/v2/import/url")
@@ -102,7 +66,7 @@ describe CloudConvert::REST::Tasks do
       end
 
       subject! do
-        @client.create_task({ name: "test", operation: "import/url", filename: "test.file", url: "http://invalid.url" })
+        @client.tasks.create({ name: "test", operation: "import/url", filename: "test.file", url: "http://invalid.url" })
       end
 
       it "requests the correct resource" do
@@ -132,7 +96,7 @@ describe CloudConvert::REST::Tasks do
     end
   end
 
-  describe "#cancel_task" do
+  describe "#cancel" do
     before do
       stub_post("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/cancel").to_return({
         body: fixture("responses/task.json"),
@@ -141,7 +105,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     subject! do
-      @client.cancel_task("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+      @client.tasks.cancel("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -154,13 +118,47 @@ describe CloudConvert::REST::Tasks do
     end
   end
 
-  describe "#delete_task" do
+  describe "#find" do
+    before do
+      stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return(body: fixture("responses/task.json"), headers: { content_type: "application/json" })
+    end
+
+    subject! do
+      @client.tasks.find("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+    end
+
+    it "requests the correct resource" do
+      expect(a_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")).to have_been_made
+    end
+
+    it "returns extended information of a given task" do
+      expect(subject).to be_a CloudConvert::Task
+      expect(subject.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+      expect(subject.status).to be :error
+      expect(subject.code).to eq "INPUT_TASK_FAILED"
+      expect(subject.message).to eq "Input task has failed"
+      expect(subject.depends_on_tasks.count).to eq 1
+      expect(subject.depends_on_tasks[0]).to be_a CloudConvert::Task
+      expect(subject.depends_on_tasks[0].id).to eq "6df0920a-7042-4e87-be52-f38a0a29a67e"
+      expect(subject.depends_on_tasks[0].status).to be :error
+      expect(subject.depends_on_tasks?).to be true
+      expect(subject.created_at).to eq Time.parse("2019-05-30T10:53:01+00:00").utc
+      expect(subject.created?).to be true
+      expect(subject.started_at).to be_nil
+      expect(subject.started?).to be false
+      expect(subject.ended_at).to eq Time.parse("2019-05-30T10:53:23+00:00").utc
+      expect(subject.ended?).to be true
+      expect(subject.links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+    end
+  end
+
+  describe "#delete" do
     before do
       stub_delete("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return({ status: 204 })
     end
 
     subject! do
-      @client.delete_task("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+      @client.tasks.delete("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -172,7 +170,7 @@ describe CloudConvert::REST::Tasks do
     end
   end
 
-  describe "#retry_task" do
+  describe "#retry" do
     before do
       stub_post("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/retry").to_return({
         body: fixture("responses/task.json"),
@@ -181,7 +179,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     subject! do
-      @client.retry_task("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+      @client.tasks.retry("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -193,7 +191,7 @@ describe CloudConvert::REST::Tasks do
     end
   end
 
-  describe "#wait_for_task" do
+  describe "#wait" do
     before do
       stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait").to_return({
         body: fixture("responses/task.json"),
@@ -202,7 +200,7 @@ describe CloudConvert::REST::Tasks do
     end
 
     subject! do
-      @client.wait_for_task("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+      @client.tasks.wait("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do

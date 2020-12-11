@@ -1,5 +1,5 @@
 module CloudConvert
-  class Job < CloudConvert::Entity
+  class Job < Entity
     # @return [String]
     attr_reader :id, :tag
 

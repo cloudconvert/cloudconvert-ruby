@@ -1,9 +1,5 @@
-require "cloudconvert/rest/api"
-
 module CloudConvert
   class Client
-    include CloudConvert::REST::API
-
     attr_accessor :api_key, :sandbox
 
     # Initializes a new Client object
@@ -26,9 +22,61 @@ module CloudConvert
       schema.validate!({ api_key: @api_key, sandbox: @sandbox }.compact)
     end
 
+    # @return [Resources::Jobs]
+    def jobs
+      @jobs ||= Resources::Jobs.new(self)
+    end
+
+    # @return [Resources::Tasks]
+    def tasks
+      @tasks ||= Resources::Tasks.new(self)
+    end
+
+    # @return [Resources::Users]
+    def users
+      @users ||= Resources::Users.new(self)
+    end
+
+    # @param method [Symbol]
+    # @param path [String]
+    # @param params [Hash]
+    # @return [OpenStruct]
+    def request(method, path, params = {})
+      response = connection.send(method, path, params)
+
+      raise CloudConvert::Error.from_response(response) unless response.success?
+
+      response.body unless response.body.blank?
+    end
+
+    # @param path [String]
+    # @param params [Hash]
+    # @return [OpenStruct]
+    def get(path, params = {})
+      request(:get, path, params)
+    end
+
+    # @param path [String]
+    # @param params [Hash]
+    # @return [OpenStruct]
+    def post(path, params = {})
+      params[:file] = Faraday::FilePart.new(params[:file]) unless params[:file].nil?
+
+      request(:post, path, params)
+    end
+
+    # @param path [String]
+    # @param params [Hash]
+    # @return [OpenStruct]
+    def delete(path, params = {})
+      request(:delete, path, params)
+    end
+
+    private
+
     # @return [String]
     def api_host
-      @api_host ||= sandbox ? CloudConvert::SANDBOX_URL : CloudConvert::API_URL
+      @api_host ||= sandbox ? SANDBOX_URL : API_URL
     end
 
     # @return [Faraday::Client]
@@ -44,22 +92,8 @@ module CloudConvert
     def headers
       @headers ||= {
         "Authorization": "Bearer #{api_key}",
-        "User-Agent" => CloudConvert::USER_AGENT,
+        "User-Agent" => USER_AGENT,
       }
-    end
-
-    # @param method [Symbol]
-    # @param path [String]
-    # @param params [Hash]
-    # @return [Faraday::Response]
-    def send_request(method, path, params = {})
-      params[:file] = Faraday::FilePart.new(params[:file]) unless params[:file].nil?
-
-      response = connection.send(method, path, params)
-
-      raise CloudConvert::Error.from_response(response) unless response.success?
-
-      response.body unless response.body.blank?
     end
   end
 end

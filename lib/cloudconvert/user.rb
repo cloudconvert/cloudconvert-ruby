@@ -1,5 +1,5 @@
 module CloudConvert
-  class User < CloudConvert::Entity
+  class User < Entity
     # @return [Integer]
     attr_reader :id, :credits
 

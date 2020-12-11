@@ -1,22 +1,22 @@
 module CloudConvert
-  module REST
-    module Jobs
+  module Resources
+    class Jobs < Resource
+      # @param params [Hash]
+      # @return [Collection<Job>]
+      def all(params = {})
+        Job.collection(client.get("/v2/jobs", params))
+      end
+
       # @param id [String]
       # @param params [Hash]
-      # @return [CloudConvert::Job]
-      def job(id, params = {})
-        CloudConvert::Job.result(send_request(:get, "/v2/jobs/#{id}", params))
+      # @return [Job]
+      def find(id, params = {})
+        Job.result(client.get("/v2/jobs/#{id}", params))
       end
 
       # @param params [Hash]
-      # @return [Array<CloudConvert::Job>]
-      def jobs(params = {})
-        CloudConvert::Job.collection(send_request(:get, "/v2/jobs", params))
-      end
-
-      # @param params [Hash]
-      # @return [CloudConvert::Job]
-      def create_job(params)
+      # @return [Job]
+      def create(params)
         schema = Schemacop::Schema.new do
           type :hash, allow_obsolete_keys: true do
             req :tasks, :array, min: 1 do
@@ -35,19 +35,19 @@ module CloudConvert
           [task[:name], task.reject { |k| k === :name }]
         end
 
-        CloudConvert::Job.result(send_request(:post, "/v2/jobs", payload))
+        Job.result(client.post("/v2/jobs", payload))
       end
 
       # @param id [String]
-      # @return [CloudConvert::Job]
-      def wait_for_job(id)
-        CloudConvert::Job.result(send_request(:get, "/v2/jobs/#{id}/wait", {}))
+      # @return [Job]
+      def wait(id)
+        Job.result(client.get("/v2/jobs/#{id}/wait", {}))
       end
 
       # @param id [String]
       # @return [void]
-      def delete_job(id)
-        send_request(:delete, "/v2/jobs/#{id}")
+      def delete(id)
+        client.delete("/v2/jobs/#{id}")
       end
     end
   end

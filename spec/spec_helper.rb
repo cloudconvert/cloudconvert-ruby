@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "cloudconvert"
 require "rspec"
+require "securerandom"
 require "stringio"
 require "tempfile"
 require "webmock/rspec"

@@ -1,5 +1,5 @@
 module CloudConvert
-  class Task < CloudConvert::Entity
+  class Task < Entity
     # @return [String]
     attr_reader :id, :name, :operation, :message, :code,
                 :engine, :engine_version, :host_name, :storage,

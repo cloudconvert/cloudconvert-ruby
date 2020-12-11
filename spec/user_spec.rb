@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe CloudConvert::User do
   describe "#==" do
     it "returns true when objects IDs are the same" do

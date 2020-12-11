@@ -1,17 +1,15 @@
-require "spec_helper"
-
-describe CloudConvert::REST::Users do
+describe CloudConvert::Resources::Users do
   before do
     @client = CloudConvert::Client.new(api_key: "test key")
   end
 
-  describe "#user" do
+  describe "#me" do
     before do
       stub_get("/v2/users/me").to_return(body: fixture("responses/user.json"), headers: { content_type: "application/json" })
     end
 
     subject! do
-      @client.user
+      @client.users.me
     end
 
     it "requests the correct resource" do

@@ -1,5 +1,5 @@
 module CloudConvert
-  class Entity < CloudConvert::Base
+  class Entity < Base
     include Equalizer.new(:id)
 
     class << self
