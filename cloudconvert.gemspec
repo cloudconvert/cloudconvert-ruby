@@ -13,7 +13,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = %w[lib]
   spec.required_ruby_version = ">= 2.7"
   spec.add_dependency "equalizer"
-  spec.add_dependency "faraday", "~> 1.1"
+  spec.add_dependency "faraday", "~> 1.0"
+  spec.add_dependency "faraday_middleware", "~> 1.0"
   spec.add_dependency "forwardable"
   spec.add_dependency "json"
   spec.add_dependency "memoizable", "~> 0.4.0"

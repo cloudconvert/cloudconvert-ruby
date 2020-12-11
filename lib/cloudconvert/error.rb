@@ -3,7 +3,7 @@ module CloudConvert
     # @return [Integer]
     attr_reader :code
 
-    # @return [Hash]
+    # @return [OpenStruct]
     attr_reader :errors
 
     # Raised when CloudConvert returns a 4xx HTTP status code
@@ -82,39 +82,14 @@ module CloudConvert
       504 => CloudConvert::Error::GatewayTimeout,
     }.freeze
 
-    MEDIA_ERRORS = {
-      "InternalError" => CloudConvert::Error::MediaInternalError,
-      "InvalidMedia" => CloudConvert::Error::InvalidMedia,
-      "UnsupportedMedia" => CloudConvert::Error::UnsupportedMedia,
-    }.freeze
-
     class << self
       # Create a new error from an HTTP response
       #
-      # @param body [String]
-      # @param headers [Hash]
+      # @param response [Faraday::Response]
       # @return [CloudConvert::Error]
-      def from_response(body, headers)
-        message, code, errors = parse_error(body)
-        new(message, code, errors)
-      end
-
-      # Create a new error from a media error hash
-      #
-      # @param error [Hash]
-      # @param headers [Hash]
-      # @return [CloudConvert::MediaError]
-      def from_processing_response(error, headers)
-        klass = MEDIA_ERRORS[error[:name]] || self
-        message = error[:message]
-        code = error[:code]
-        klass.new(message, headers, code)
-      end
-
-      private
-
-      def parse_error(body)
-        [body[:message], body[:code], body[:errors]]
+      def from_response(response)
+        klass = ERRORS[response.status] || self
+        klass.new(response.body.message, response.body.code, response.body.errors)
       end
     end
 

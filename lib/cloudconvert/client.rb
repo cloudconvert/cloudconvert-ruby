@@ -4,7 +4,7 @@ module CloudConvert
   class Client
     include CloudConvert::REST::API
 
-    attr_accessor :api_key, :base_url, :proxy, :sandbox, :timeouts, :user_agent
+    attr_accessor :api_key, :sandbox
 
     # Initializes a new Client object
     #
@@ -18,31 +18,34 @@ module CloudConvert
         instance_variable_set("@#{key}", value)
       end
 
-      yield(self) if block_given?
-
       schema = Schemacop::Schema.new do
         req! :api_key, :string
         opt! :sandbox, :boolean, default: false
       end
 
       schema.validate!({ api_key: @api_key, sandbox: @sandbox }.compact)
-
-      @client = Faraday.new({
-        url: base_url,
-        headers: {
-          "Authorization" => "Bearer #{api_key}",
-          "User-Agent" => user_agent,
-        },
-      })
     end
 
     # @return [String]
-    def base_url
-      if sandbox
-        @base_url ||= CloudConvert::SANDBOX_URL
-      else
-        @base_url ||= CloudConvert::API_URL
+    def api_host
+      @api_host ||= sandbox ? CloudConvert::SANDBOX_URL : CloudConvert::API_URL
+    end
+
+    # @return [Faraday::Client]
+    def connection
+      @connection ||= Faraday.new(url: api_host, headers: headers) do |builder|
+        builder.adapter Faraday.default_adapter
+        builder.request :url_encoded
+        builder.use CloudConvert::Middleware::ParseJson, content_type: /\bjson$/
       end
+    end
+
+    # @return [Hash]
+    def headers
+      @headers ||= {
+        "Authorization": "Bearer #{api_key}",
+        "User-Agent" => CloudConvert::USER_AGENT,
+      }
     end
 
     # @param method [Symbol]
@@ -51,13 +54,12 @@ module CloudConvert
     # @return [Faraday::Response]
     def send_request(method, path, params = {})
       params[:file] = Faraday::FilePart.new(params[:file]) unless params[:file].nil?
-      response = @client.public_send(method, path, params)
-      JSON.parse(response.body, object_class: OpenStruct) unless response.body.blank?
-    end
 
-    # @return [String]
-    def user_agent
-      @user_agent ||= "CloudConvertRubyGem/#{CloudConvert::VERSION}"
+      response = connection.send(method, path, params)
+
+      raise CloudConvert::Error.from_response(response) unless response.success?
+
+      response.body unless response.body.blank?
     end
   end
 end
