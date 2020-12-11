@@ -1,7 +1,3 @@
-require "cloudconvert/base"
-require "cloudconvert/collection"
-require "equalizer"
-
 module CloudConvert
   class Entity < CloudConvert::Base
     include Equalizer.new(:id)

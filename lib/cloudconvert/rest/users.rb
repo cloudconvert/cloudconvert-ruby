@@ -1,5 +1,3 @@
-require "cloudconvert/user"
-
 module CloudConvert
   module REST
     module Users

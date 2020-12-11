@@ -1,5 +1,3 @@
-require "cloudconvert/entity"
-
 module CloudConvert
   class Job < CloudConvert::Entity
     # @return [String]

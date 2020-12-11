@@ -1,10 +1,4 @@
-require "cloudconvert/error"
 require "cloudconvert/rest/api"
-require "cloudconvert/version"
-require "faraday"
-require "json"
-require "ostruct"
-require "schemacop"
 
 module CloudConvert
   class Client

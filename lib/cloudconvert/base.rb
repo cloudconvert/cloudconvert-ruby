@@ -1,7 +1,3 @@
-require "forwardable"
-require "memoizable"
-require "ostruct"
-
 module CloudConvert
   class Base
     extend Forwardable

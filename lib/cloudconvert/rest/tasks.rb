@@ -1,6 +1,3 @@
-require "cloudconvert/task"
-require "schemacop"
-
 module CloudConvert
   module REST
     module Tasks

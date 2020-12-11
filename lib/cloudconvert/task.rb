@@ -1,5 +1,3 @@
-require "cloudconvert/entity"
-
 module CloudConvert
   class Task < CloudConvert::Entity
     # @return [String]

@@ -1,6 +1,3 @@
-require "cloudconvert/job"
-require "schemacop"
-
 module CloudConvert
   module REST
     module Jobs

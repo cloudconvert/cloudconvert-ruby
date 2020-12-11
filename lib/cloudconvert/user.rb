@@ -1,5 +1,3 @@
-require "cloudconvert/entity"
-
 module CloudConvert
   class User < CloudConvert::Entity
     # @return [Integer]
