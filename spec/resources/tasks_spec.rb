@@ -232,7 +232,7 @@ describe CloudConvert::Resources::Tasks do
     end
 
     subject! do
-      @client.tasks.upload(file, content_type, task)
+      @client.tasks.upload(file, task)
     end
 
     it "requests the correct resource" do
