@@ -17,42 +17,38 @@ RSpec.configure do |config|
   end
 end
 
-def a_delete(path)
-  a_request(:delete, CloudConvert::API_URL + path)
-end
-
-def a_get(path)
-  a_request(:get, CloudConvert::API_URL + path)
-end
-
-def a_post(path)
-  a_request(:post, CloudConvert::API_URL + path)
-end
-
-def a_put(path)
-  a_request(:put, CloudConvert::API_URL + path)
-end
-
-def stub_delete(path)
-  stub_request(:delete, CloudConvert::API_URL + path)
-end
-
-def stub_get(path)
-  stub_request(:get, CloudConvert::API_URL + path)
-end
-
-def stub_post(path)
-  stub_request(:post, CloudConvert::API_URL + path)
-end
-
-def stub_put(path)
-  stub_request(:put, CloudConvert::API_URL + path)
-end
-
 def fixture_path
   File.expand_path("fixtures", __dir__)
 end
 
 def fixture(file)
   File.new(fixture_path + "/" + file)
+end
+
+def a_get(path)
+  a_request(:get, url(path))
+end
+
+def a_post(path)
+  a_request(:post, url(path))
+end
+
+def a_delete(path)
+  a_request(:delete, url(path))
+end
+
+def stub_get(path)
+  stub_request(:get, url(path))
+end
+
+def stub_post(path)
+  stub_request(:post, url(path))
+end
+
+def stub_delete(path)
+  stub_request(:delete, url(path))
+end
+
+def url(path)
+  path.gsub(%r{^/}, CloudConvert::API_URL + "/")
 end

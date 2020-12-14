@@ -54,10 +54,11 @@ module CloudConvert
         Task.result(client.get("/v2/tasks/#{id}/wait"))
       end
 
-      # @param file [File]
+      # @param file [String, IO] Either a String filename to a local file or an open IO object.
+      # @param content_type [String] String content type of the file data.
       # @param task [Task]
       # @return [Response]
-      def upload(file, task)
+      def upload(file, content_type, task)
         unless task.operation == "import/upload"
           raise ArgumentError.new("The task operation is not import/upload")
         end
@@ -66,7 +67,12 @@ module CloudConvert
           raise ArgumentError.new("The task is not ready for uploading")
         end
 
-        client.post(task.result.form.url, task.result.form.parameters.to_h.merge(file: file))
+        file = Faraday::FilePart.new(file, content_type)
+
+        client.post(task.result.form.url, task.result.form.parameters.to_h.merge(file: file)) do |request|
+          request.headers.delete("Authorization")
+          request.headers["Content-Type"] = "multipart/form-data"
+        end
       end
     end
   end

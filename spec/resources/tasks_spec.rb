@@ -191,6 +191,56 @@ describe CloudConvert::Resources::Tasks do
     end
   end
 
+  describe "#upload" do
+    before do
+      stub_post("/v2/import/upload").to_return({
+        body: fixture("responses/upload_task_created.json"),
+        headers: { content_type: "application/json" },
+      })
+
+      stub_post(form_url)
+      # .with({
+      #   # WebMock does not support matching body for multipart/form-data requests yet :(
+      #   body: form_parameters.merge(file: Faraday::FilePart.new(file, content_type)),
+      #   headers: { content_type: "multipart/form-data" },
+      # })
+    end
+
+    let(:form_url) do
+      "https://upload.sandbox.cloudconvert.com/storage.de1.cloud.ovh.net/v1/AUTH_b2cffe8f45324c2bba39e8db1aedb58f/cloudconvert-files-sandbox/8aefdb39-34c8-4c7a-9f2e-1751686d615e/?s=jNf7hn3zox1iZfZY6NirNA&e=1559588529"
+    end
+
+    let(:form_parameters) do
+      {
+        expires: 1559588529,
+        max_file_count: 1,
+        max_file_size: 10000000000,
+        signature: "79fda6c5ffbfaa857ae9a1430641cc68c5a72297",
+      }
+    end
+
+    let(:file) do
+      StringIO.new("test file")
+    end
+
+    let(:content_type) do
+      "text/plain"
+    end
+
+    let(:task) do
+      @client.tasks.create(operation: "import/upload")
+    end
+
+    subject! do
+      @client.tasks.upload(file, content_type, task)
+    end
+
+    it "requests the correct resource" do
+      expect(a_post("/v2/import/upload")).to have_been_made
+      expect(a_post(form_url)).to have_been_made
+    end
+  end
+
   describe "#wait" do
     before do
       stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait").to_return({

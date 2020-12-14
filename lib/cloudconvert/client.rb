@@ -41,8 +41,8 @@ module CloudConvert
     # @param path [String]
     # @param params [Hash]
     # @return [OpenStruct]
-    def request(method, path, params = {})
-      response = connection.send(method, path, params)
+    def request(method, path, params = {}, &block)
+      response = connection.send(method, path, params, &block)
 
       raise CloudConvert::Error.from_response(response) unless response.success?
 
@@ -52,24 +52,22 @@ module CloudConvert
     # @param path [String]
     # @param params [Hash]
     # @return [OpenStruct]
-    def get(path, params = {})
-      request(:get, path, params)
+    def get(path, params = {}, &block)
+      request(:get, path, params, &block)
     end
 
     # @param path [String]
     # @param params [Hash]
     # @return [OpenStruct]
-    def post(path, params = {})
-      params[:file] = Faraday::FilePart.new(params[:file]) unless params[:file].nil?
-
-      request(:post, path, params)
+    def post(path, params = {}, &block)
+      request(:post, path, params, &block)
     end
 
     # @param path [String]
     # @param params [Hash]
     # @return [OpenStruct]
-    def delete(path, params = {})
-      request(:delete, path, params)
+    def delete(path, params = {}, &block)
+      request(:delete, path, params, &block)
     end
 
     private
@@ -81,10 +79,11 @@ module CloudConvert
 
     # @return [Faraday::Client]
     def connection
-      @connection ||= Faraday.new(url: api_host, headers: headers) do |builder|
-        builder.adapter Faraday.default_adapter
-        builder.request :url_encoded
-        builder.use CloudConvert::Middleware::ParseJson, content_type: /\bjson$/
+      @connection ||= Faraday.new(url: api_host, headers: headers) do |f|
+        f.adapter Faraday.default_adapter
+        f.request :json
+        f.request :multipart
+        f.use CloudConvert::Middleware::ParseJson, content_type: /\bjson$/
       end
     end
 
