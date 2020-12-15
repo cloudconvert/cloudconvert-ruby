@@ -35,7 +35,7 @@ module CloudConvert
       # @param attrs [Array, Symbol]
       def object_attr_reader(klass, *attrs)
         attrs.each do |attr|
-          define_object_method(attr)
+          define_object_method(attr, klass)
           define_predicate_method(attr)
         end
       end
@@ -120,7 +120,7 @@ module CloudConvert
       # @param key [Symbol]
       def define_object_method(key, klass)
         define_method(key) do
-          CloudConvert.const_get(klass).new(@attrs[key])
+          CloudConvert.const_get(klass).new(@attrs[key]) unless @attrs[key].nil?
         end
         memoize(key)
       end

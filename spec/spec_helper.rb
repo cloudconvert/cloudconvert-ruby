@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "cloudconvert"
+require "rack"
 require "rspec"
 require "securerandom"
 require "stringio"

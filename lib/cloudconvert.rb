@@ -5,6 +5,7 @@ require "forwardable"
 require "json"
 require "memoizable"
 require "mimemagic"
+require "openssl"
 require "ostruct"
 require "schemacop"
 
@@ -13,6 +14,7 @@ require "cloudconvert/client"
 require "cloudconvert/collection"
 require "cloudconvert/entity"
 require "cloudconvert/error"
+require "cloudconvert/event"
 require "cloudconvert/file"
 require "cloudconvert/job"
 require "cloudconvert/middleware"
@@ -20,9 +22,12 @@ require "cloudconvert/resource"
 require "cloudconvert/resources/jobs"
 require "cloudconvert/resources/tasks"
 require "cloudconvert/resources/users"
+require "cloudconvert/signature"
 require "cloudconvert/task"
 require "cloudconvert/user"
 require "cloudconvert/version"
+require "cloudconvert/webhook"
+require "cloudconvert/webhook/processor" if defined? ActiveSupport::Concern
 
 module CloudConvert
   API_URL = "https://api.cloudconvert.com".freeze

@@ -1,5 +1,5 @@
 describe CloudConvert::Job do
-  id1 = SecureRandom.uuid, id2 = SecureRandom.uuid
+  id1, id2 = [SecureRandom.uuid, SecureRandom.uuid]
   url = "https://api.cloudconvert.com/v2/tasks/#{id1}"
 
   describe "#==" do
