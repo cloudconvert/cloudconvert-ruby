@@ -1,4 +1,5 @@
 require "active_support/concern"
+require "down"
 require "equalizer"
 require "faraday"
 require "faraday_middleware"

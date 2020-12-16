@@ -71,9 +71,18 @@ You can use these URLs to download output files:
 exported_url_task_id = "84e872fc-d823-4363-baab-eade2e05ee54"
 task = cloudconvert.tasks.wait(exported_url_task_id) # Wait for job completion
 file = task.result.files[0]
-export = cloudconvert.download(filename: file.filename, url: file.url)
-puts export
+export = cloudconvert.download(file.url)
 ```
+
+By default the remote file will be downloaded into a temporary location and returned as a `Tempfile`.
+If you would like the file to be downloaded to a specific location on disk, you can specify the `:destination` option:
+
+```rb
+export = cloudconvert.download(file.url, destination: "/path/to/destination")
+```
+
+The `download` method is powered by the [Down gem](https://github.com/janko/down),
+for the full list of arguments see the [the down docs](https://github.com/janko/down#down).
 
 ## Uploading Files
 

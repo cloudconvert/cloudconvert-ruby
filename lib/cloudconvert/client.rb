@@ -70,6 +70,12 @@ module CloudConvert
       request(:delete, path, params, &block)
     end
 
+    # @param url [String]
+    # @return [Tempfile]
+    def download(url, *attrs)
+      Down.download(url, *attrs)
+    end
+
     private
 
     # @return [String]
