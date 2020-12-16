@@ -1,4 +1,4 @@
-describe CloudConvert::Client do
+describe CloudConvert::Client, unit: true do
   API_KEY_ATTR = "api key from attrs"
   API_KEY_ENV = "api key from env"
 

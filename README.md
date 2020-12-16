@@ -3,7 +3,9 @@ cloudconvert-ruby
 
 > This is the official Ruby SDK for the [CloudConvert](https://cloudconvert.com/api/v2) API v2.
 
-## Installation
+
+Installation
+------------
 
 Add this line to your application's Gemfile:
 
@@ -23,19 +25,23 @@ Or install it yourself as:
 gem install cloudconvert
 ```
 
-## Creating API Client
+
+Creating API Client
+-------------------
 
 ```rb
 cloudconvert = CloudConvert::Client.new(api_key: "API_KEY", sandbox: false)
 ```
 
-Or set the environment variable `CLOUDCONVERT_API_KEY` and use:
+Or set the environment variables `CLOUDCONVERT_API_KEY` and `CLOUDCONVERT_SANDBOX` and use:
 
 ```rb
 cloudconvert = CloudConvert::Client.new
 ```
 
-## Creating Jobs
+
+Creating Jobs
+-------------
 
 ```rb
 cloudconvert.jobs.create({
@@ -61,7 +67,9 @@ cloudconvert.jobs.create({
 })
 ```
 
-## Downloading Files
+
+Downloading Files
+-----------------
 
 CloudConvert can generate public URLs for using `export/url` tasks.
 
@@ -84,7 +92,9 @@ export = cloudconvert.download(file.url, destination: "/path/to/destination")
 The `download` method is powered by the [Down gem](https://github.com/janko/down),
 for the full list of arguments see the [the down docs](https://github.com/janko/down#down).
 
-## Uploading Files
+
+Uploading Files
+---------------
 
 Uploads to CloudConvert are done via `import/upload` tasks (see the [docs](https://cloudconvert.com/api/v2/import#import-upload-tasks)):
 
@@ -123,7 +133,9 @@ file = CloudConvert::File.new("/path/to/sample.pdf", "video/mp4", "sample.mp4")
 response = cloudconvert.tasks.upload(file, upload_task)
 ```
 
-## Webhooks
+
+Webhooks
+--------
 
 Webhooks can be created on the [CloudConvert Dashboard](https://cloudconvert.com/dashboard/api/v2/webhooks),
 where you can also find the signing secret.
@@ -190,21 +202,54 @@ The `verify`/`verify_request` methods return `true`/`false`, use `verify!` or `v
 
 You can read the [full list of events](https://cloudconvert.com/api/v2/webhooks) CloudConvert can notify you about in our documentation.
 
-## Development
+
+Development
+-----------
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-## Contributing
+
+Contributing
+------------
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/cloudconvert/cloudconvert-ruby.
 
-## License
+
+Unit Tests
+----------
+
+```sh
+rspec --tag unit
+```
+
+
+Integration Tests
+-----------------
+
+```sh
+rspec --tag integration
+```
+
+By default, this runs the integration tests against the Sandbox API with an official CloudConvert account.
+If you would like to use your own account, you can set your API key using the `CLOUDCONVERT_API_KEY` enviroment variable.
+In this case you need to whitelist the following MD5 hashes for Sandbox API (using the CloudConvert dashboard).
+
+```
+53d6fe6b688c31c565907c81de625046  input.pdf
+99d4c165f77af02015aa647770286cf9  input.png
+```
+
+
+License
+-------
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-## Resources
+
+Resources
+---------
 
 * [API v2 Documentation](https://cloudconvert.com/api/v2)
 * [CloudConvert Blog](https://cloudconvert.com/blog)

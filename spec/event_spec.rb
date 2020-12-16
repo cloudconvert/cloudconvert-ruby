@@ -1,4 +1,4 @@
-describe CloudConvert::Event do
+describe CloudConvert::Event, unit: true do
   job = { id: SecureRandom.uuid }
 
   describe "#==" do

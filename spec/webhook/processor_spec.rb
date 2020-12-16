@@ -1,4 +1,4 @@
-describe CloudConvert::Webhook::Processor do
+describe CloudConvert::Webhook::Processor, unit: true do
   class ControllerWithoutSecret
     attr_reader :request, :result
 

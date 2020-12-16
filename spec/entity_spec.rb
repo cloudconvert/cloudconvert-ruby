@@ -1,4 +1,4 @@
-describe CloudConvert::Entity do
+describe CloudConvert::Entity, unit: true do
   describe ".result" do
     it "should build an entity" do
       entity = CloudConvert::Entity.result(OpenStruct.new(data: { id: 123 }))

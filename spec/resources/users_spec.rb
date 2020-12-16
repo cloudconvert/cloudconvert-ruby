@@ -1,4 +1,4 @@
-describe CloudConvert::Resources::Users do
+describe CloudConvert::Resources::Users, unit: true do
   let(:cloudconvert) do
     CloudConvert::Client.new(api_key: "test key")
   end

@@ -1,4 +1,4 @@
-describe CloudConvert do
+describe CloudConvert, unit: true do
   it "has api url" do
     expect(CloudConvert::API_URL).to be_a String
   end

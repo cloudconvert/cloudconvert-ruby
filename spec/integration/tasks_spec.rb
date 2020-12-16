@@ -1,6 +1,6 @@
 require "integration_helper"
 
-describe CloudConvert::Resources::Tasks do
+describe CloudConvert::Resources::Tasks, integration: true do
   let(:cloudconvert) do
     CloudConvert::Client.new({
       api_key: CLOUDCONVERT_SANDBOX_API_KEY,

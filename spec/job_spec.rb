@@ -1,4 +1,4 @@
-describe CloudConvert::Job do
+describe CloudConvert::Job, unit: true do
   id1, id2 = [SecureRandom.uuid, SecureRandom.uuid]
   url = "https://api.cloudconvert.com/v2/tasks/#{id1}"
 
