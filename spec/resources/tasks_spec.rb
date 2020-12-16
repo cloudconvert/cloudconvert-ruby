@@ -199,15 +199,11 @@ describe CloudConvert::Resources::Tasks, unit: true do
       })
 
       stub_post(form_url)
-        # .with({
-        #   WebMock does not support matching body for multipart/form-data requests yet :(
-        #   body: form_parameters.merge(file: Faraday::FilePart.new(file, content_type)),
-        #   headers: { content_type: "multipart/form-data" },
-        # })
-        .to_return({
-          body: fixture("responses/upload_completed.xml"),
-          headers: { content_type: "application/xml" },
-        })
+      # .with({
+      #   WebMock does not support matching body for multipart/form-data requests yet :(
+      #   body: form_parameters.merge(file: CloudConvert::File.new(file)),
+      #   headers: { content_type: "multipart/form-data" },
+      # })
     end
 
     let(:form_url) do
@@ -238,14 +234,7 @@ describe CloudConvert::Resources::Tasks, unit: true do
     it "requests the correct resource" do
       expect(a_post("/v2/import/upload")).to have_been_made
       expect(a_post(form_url)).to have_been_made
-    end
-
-    it "returns the upload" do
-      expect(upload).to be_a CloudConvert::Upload
-      expect(upload.bucket).to eq "tasks-sandbox"
-      expect(upload.key).to eq "ff745ae9-5352-4b34-8c18-c2f23a583f1a/input.pdf"
-      expect(upload.etag).to eq '"53d6fe6b688c31c565907c81de625046"'
-      expect(upload.location).to eq "https://storage.cloudconvert.com/tasks-sandbox/ff745ae9-5352-4b34-8c18-c2f23a583f1a/input.pdf"
+      expect(upload).to be nil
     end
   end
 

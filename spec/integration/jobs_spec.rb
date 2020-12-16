@@ -31,8 +31,7 @@ describe CloudConvert::Resources::Jobs, integration: true do
     import_task = cloudconvert.tasks.find(import_task.id)
 
     # do upload
-    upload = cloudconvert.tasks.upload(File.expand_path("files/input.pdf", __dir__), import_task)
-    expect(upload.location).to match %r{^https://storage.cloudconvert.com/tasks-sandbox}
+    cloudconvert.tasks.upload(File.expand_path("files/input.pdf", __dir__), import_task)
 
     # fetch the finished export task
     export_task = cloudconvert.tasks.wait(export_task.id)

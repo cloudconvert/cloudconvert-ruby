@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<PostResponse>
-  <Bucket>tasks-sandbox</Bucket>
-  <Key>ff745ae9-5352-4b34-8c18-c2f23a583f1a/input.pdf</Key>
-  <ETag>&#34;53d6fe6b688c31c565907c81de625046&#34;</ETag>
-  <Location>https://storage.cloudconvert.com/tasks-sandbox/ff745ae9-5352-4b34-8c18-c2f23a583f1a/input.pdf</Location>
-</PostResponse>

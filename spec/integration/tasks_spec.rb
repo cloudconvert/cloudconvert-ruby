@@ -15,8 +15,7 @@ describe CloudConvert::Resources::Tasks, integration: true do
     })
 
     # upload file
-    upload = cloudconvert.tasks.upload(File.expand_path("files/input.pdf", __dir__), @task)
-    expect(upload.location).to match %r{^https://storage.cloudconvert.com/tasks-sandbox}
+    cloudconvert.tasks.upload(File.expand_path("files/input.pdf", __dir__), @task)
 
     # wait for the task
     @task = cloudconvert.tasks.wait(@task.id)

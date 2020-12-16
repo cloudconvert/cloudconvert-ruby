@@ -5,7 +5,5 @@ module CloudConvert
         JSON.parse(body, object_class: OpenStruct) unless body.blank?
       end
     end
-
-    ParseXml = Class.new(FaradayMiddleware::ParseXml)
   end
 end

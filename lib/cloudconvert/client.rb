@@ -92,7 +92,6 @@ module CloudConvert
         f.request :json
         f.request :multipart
         f.use CloudConvert::Middleware::ParseJson, content_type: /\bjson$/
-        f.use CloudConvert::Middleware::ParseXml, content_type: /\bxml$/
       end
     end
 

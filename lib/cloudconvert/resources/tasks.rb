@@ -56,7 +56,7 @@ module CloudConvert
 
       # @param file [File, String, IO] Either a String filename to a local file or an open IO object.
       # @param task [Task] The "import/upload" Task to upload the file to.
-      # @return [Upload]
+      # @return [void]
       def upload(file, task)
         unless task.operation == "import/upload"
           raise ArgumentError.new("The task operation is not import/upload")
@@ -68,12 +68,12 @@ module CloudConvert
 
         file = File.new(file) unless file.is_a? File
 
-        response = client.post(task.result.form.url, task.result.form.parameters.to_h.merge(file: file)) do |request|
+        client.post(task.result.form.url, task.result.form.parameters.to_h.merge(file: file)) do |request|
           request.headers.delete("Authorization")
           request.headers["Content-Type"] = "multipart/form-data"
         end
 
-        Upload.new Hash[*response["PostResponse"].flat_map { |k, v| [k.downcase.to_sym, v] }]
+        nil
       end
     end
   end
