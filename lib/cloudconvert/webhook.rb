@@ -37,7 +37,7 @@ module CloudConvert
 
       # @param request [Request] The request to the webhook URL from CloudConvert.
       # @param secret [String] The signing secret from for your webhook settings.
-      # @return [Event]
+      # @return [Boolean]
       def verify_request(request, secret)
         verify request.body.rewind && request.body.read, request.get_header("HTTP_CLOUDCONVERT_SIGNATURE"), secret
       end
@@ -45,7 +45,7 @@ module CloudConvert
       # @param request [Request] The request to the webhook URL from CloudConvert.
       # @param secret [String] The signing secret from for your webhook settings.
       # @raise [MissingSignature, InvalidSignature]
-      # @return [Event]
+      # @return [Boolean]
       def verify_request!(request, secret)
         verify! request.body.rewind && request.body.read, request.get_header("HTTP_CLOUDCONVERT_SIGNATURE"), secret
       end

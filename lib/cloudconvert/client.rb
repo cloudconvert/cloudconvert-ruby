@@ -1,6 +1,6 @@
 module CloudConvert
   class Client
-    attr_accessor :api_key, :sandbox
+    attr_reader :api_key, :sandbox
 
     # Initializes a new Client object
     #
@@ -19,7 +19,7 @@ module CloudConvert
         opt! :sandbox, :boolean, default: false
       end
 
-      schema.validate!({ api_key: @api_key, sandbox: @sandbox }.compact)
+      schema.validate!({ api_key: api_key, sandbox: sandbox }.compact)
     end
 
     # @return [Resources::Jobs]

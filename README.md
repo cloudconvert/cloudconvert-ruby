@@ -177,7 +177,7 @@ Or by passing in a request:
 CloudConvert::Webhook::verify_request(request, secret)
 ```
 
-The `verify` and `verify_request` methods return true/false, use `verify!` or `verify_request!` if you'd rather raise a `CloudConvert::Webhook::Error`.
+The `verify`/`verify_request` methods return `true`/`false`, use `verify!` or `verify_request!` if you'd rather raise a `CloudConvert::Webhook::Error`.
 
 You can read the [full list of events](https://cloudconvert.com/api/v2/webhooks) CloudConvert can notify you about in our documentation.
 

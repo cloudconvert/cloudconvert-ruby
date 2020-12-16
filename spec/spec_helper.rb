@@ -1,4 +1,5 @@
 require "bundler/setup"
+require "climate_control"
 require "cloudconvert"
 require "pry"
 require "rack"
@@ -53,4 +54,8 @@ end
 
 def url(path)
   path.gsub(%r{^/}, CloudConvert::API_URL + "/")
+end
+
+def with_env(options, &block)
+  ClimateControl.modify(options, &block)
 end
