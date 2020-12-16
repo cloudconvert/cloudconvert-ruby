@@ -1,4 +1,5 @@
 require "active_support/concern"
+require "active_support/core_ext/hash/reverse_merge"
 require "down"
 require "equalizer"
 require "faraday"

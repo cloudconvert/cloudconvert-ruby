@@ -32,7 +32,7 @@ module CloudConvert
         payload = params.dup
 
         payload[:tasks] = payload[:tasks].to_h do |task|
-          [task[:name], task.reject { |k| k === :name }]
+          [task[:name], task.reject { |k| k == :name }]
         end
 
         Job.result(client.post("/v2/jobs", payload))

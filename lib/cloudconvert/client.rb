@@ -7,19 +7,18 @@ module CloudConvert
     # @param options [Hash]
     # @return [CloudConvert::Client]
     def initialize(options = {})
-      @api_key = ENV["CLOUDCONVERT_API_KEY"]
-      @sandbox = ENV["CLOUDCONVERT_SANDBOX"].to_s.downcase === "true"
-
-      options.each do |key, value|
-        instance_variable_set("@#{key}", value)
-      end
-
       schema = Schemacop::Schema.new do
         req! :api_key, :string
         opt! :sandbox, :boolean, default: false
       end
 
-      schema.validate!({ api_key: api_key, sandbox: sandbox }.compact)
+      schema.validate! options.reverse_merge!({
+        api_key: ENV["CLOUDCONVERT_API_KEY"],
+        sandbox: ENV["CLOUDCONVERT_SANDBOX"].to_s.downcase == "true",
+      })
+
+      @api_key = options[:api_key]
+      @sandbox = options[:sandbox]
     end
 
     # @return [Resources::Jobs]
@@ -43,9 +42,7 @@ module CloudConvert
     # @return [OpenStruct]
     def request(method, path, params = {}, &block)
       response = connection.send(method, path, params, &block)
-
       raise CloudConvert::Error.from_response(response) unless response.success?
-
       response.body unless response.body.blank?
     end
 
