@@ -3,6 +3,10 @@ cloudconvert-ruby
 
 > This is the official Ruby SDK for the [CloudConvert](https://cloudconvert.com/api/v2) API v2.
 
+[![Build Status](https://github.com/cloudconvert/cloudconvert-ruby/workflows/Tests/badge.svg)](https://github.com/cloudconvert/cloudconvert-ruby/actions?query=workflow%3ATests)
+[![Latest Stable Version](https://img.shields.io/gem/v/cloudconvert-api?label=stable)](https://rubygems.org/gems/cloudconvert-api)
+[![Total Downloads](https://img.shields.io/gem/dt/cloudconvert-api)](https://rubygems.org/gems/cloudconvert-api)
+[![License](https://img.shields.io/github/license/cloudconvert/cloudconvert-ruby)](https://rubygems.org/gems/cloudconvert-api)
 
 Installation
 ------------
