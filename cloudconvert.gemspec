@@ -1,7 +1,7 @@
 require_relative "lib/cloudconvert/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "cloudconvert"
+  spec.name = "cloudconvert-sdk"
   spec.version = CloudConvert::VERSION
   spec.authors = ["Josias Montag", "Steve Lacey"]
   spec.email = %w[josias@montag.info steve@steve.ly]
