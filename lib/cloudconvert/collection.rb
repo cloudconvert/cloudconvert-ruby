@@ -7,5 +7,9 @@ module CloudConvert
       @links = links
       @meta = meta
     end
+
+    def where(attrs)
+      self.class.new select { |item| attrs.map { |k, v| item.send(k) == v ? true : nil }.compact.length == attrs.length }
+    end
   end
 end
