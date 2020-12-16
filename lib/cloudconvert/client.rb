@@ -91,7 +91,7 @@ module CloudConvert
     def headers
       @headers ||= {
         "Authorization": "Bearer #{api_key}",
-        "User-Agent" => USER_AGENT,
+        "User-Agent": USER_AGENT,
       }
     end
   end

@@ -163,7 +163,8 @@ payload = request.body.read
 signature = request.headers["CloudConvert-Signature"]
 secret = "..." # You can find it in your webhook settings
 
-CloudConvert::Webhook::verify(payload, signature, secret) do |event|
+if CloudConvert::Webhook::verify(payload, signature, secret)
+  event = CloudConvert::Webhook::event(payload)
   event.name == "job.finished"
   puts event.job.id
   puts event.job.tasks.count
@@ -173,12 +174,10 @@ end
 Or by passing in a request:
 
 ```rb
-CloudConvert::Webhook::verify_request(request, secret) do |event|
-  # ...
-end
+CloudConvert::Webhook::verify_request(request, secret)
 ```
 
-The verify methods will raise a `CloudConvert::Webhook::Error` if the `CloudConvert-Signature` header is invalid.
+The `verify` and `verify_request` methods return true/false, use `verify!` or `verify_request!` if you'd rather raise a `CloudConvert::Webhook::Error`.
 
 You can read the [full list of events](https://cloudconvert.com/api/v2/webhooks) CloudConvert can notify you about in our documentation.
 

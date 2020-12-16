@@ -13,35 +13,52 @@ describe CloudConvert::Webhook do
       expect(subject.verify(payload, signature, secret)).to be true
     end
 
+    it "should return false when signature is invalid" do
+      expect(subject.verify(payload, invalid_signature, secret)).to be false
+    end
+  end
+
+  describe ".verify!" do
+    it "should return true when signature is valid" do
+      expect(subject.verify!(payload, signature, secret)).to be true
+    end
+
     it "should raise error when signature is invalid" do
-      expect { subject.verify(payload, invalid_signature, secret) }.to raise_error CloudConvert::Webhook::InvalidSignature
+      expect { subject.verify!(payload, invalid_signature, secret) }.to raise_error CloudConvert::Webhook::InvalidSignature
     end
   end
 
   describe ".verify_request" do
     it "should return true when signature is valid" do
-      request = Rack::Request.new("rack.input" => payload, CloudConvert::SIGNATURE => signature)
+      request = Rack::Request.new("rack.input" => StringIO.new(payload), "HTTP_CLOUDCONVERT_SIGNATURE" => signature)
       expect(subject.verify_request(request, secret)).to be true
     end
 
-    it "should raise error when signature is invalid" do
-      request = Rack::Request.new("rack.input" => payload, CloudConvert::SIGNATURE => invalid_signature)
-      expect { subject.verify_request(request, secret) }.to raise_error CloudConvert::Webhook::InvalidSignature
-    end
-
-    it "should raise error when signature is missing" do
-      request = Rack::Request.new('rack.input': payload)
-      expect { subject.verify_request(request, secret) }.to raise_error CloudConvert::Webhook::MissingSignature
-    end
-  end
-
-  describe ".valid?" do
-    it "should return true when signature is valid" do
-      expect(subject.valid?(payload, signature, secret)).to be true
+    it "should return false when signature is invalid" do
+      request = Rack::Request.new("rack.input" => StringIO.new(payload), "HTTP_CLOUDCONVERT_SIGNATURE" => invalid_signature)
+      expect(subject.verify_request(request, secret)).to be false
     end
 
     it "should return false when signature is invalid" do
-      expect(subject.valid?(payload, invalid_signature, secret)).to be false
+      request = Rack::Request.new("rack.input" => StringIO.new(payload))
+      expect(subject.verify_request(request, secret)).to be false
+    end
+  end
+
+  describe ".verify_request!" do
+    it "should return true when signature is valid" do
+      request = Rack::Request.new("rack.input" => StringIO.new(payload), "HTTP_CLOUDCONVERT_SIGNATURE" => signature)
+      expect(subject.verify_request!(request, secret)).to be true
+    end
+
+    it "should raise error when signature is invalid" do
+      request = Rack::Request.new("rack.input" => StringIO.new(payload), "HTTP_CLOUDCONVERT_SIGNATURE" => invalid_signature)
+      expect { subject.verify_request!(request, secret) }.to raise_error CloudConvert::Webhook::InvalidSignature
+    end
+
+    it "should raise error when signature is missing" do
+      request = Rack::Request.new("rack.input" => StringIO.new(payload))
+      expect { subject.verify_request!(request, secret) }.to raise_error CloudConvert::Webhook::MissingSignature
     end
   end
 end

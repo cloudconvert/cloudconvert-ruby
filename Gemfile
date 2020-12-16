@@ -6,6 +6,7 @@ gem "yard"
 
 group :development, :test do
   gem "coveralls", "~> 0.8.23"
+  gem "pry"
   gem "rack", "~> 2.2"
   gem "rspec", "~> 3.0"
   gem "rubocop", "~> 1.5"

@@ -11,8 +11,8 @@ module CloudConvert::Webhook::Processor
 
   def create
     method = event.name.gsub(".", "_")
-    raise NoMethodError.new("#{name}##{method} not implemented") unless self.respond_to?(method, true)
-    self.send(method, event)
+    raise NoMethodError.new("#{name}##{method} not implemented") unless respond_to?(method, true)
+    send(method, event)
     head(:ok)
   end
 
@@ -20,26 +20,10 @@ module CloudConvert::Webhook::Processor
 
   def authenticate_cloudconvert_request!
     raise UnspecifiedSecret.new unless respond_to?(:webhook_secret, true)
-
-    begin
-      CloudConvert::Webhook.verify(payload, signature, webhook_secret(event))
-    rescue CloudConvert::Webhook::Error
-      head(:bad_request)
-    end
+    head(:bad_request) unless CloudConvert::Webhook.verify_request(request, webhook_secret(event))
   end
 
   def event
-    @event ||= CloudConvert::Webhook.event(payload)
-  end
-
-  def payload
-    @payload ||= (
-      request.body.rewind
-      request.body.read
-    )
-  end
-
-  def signature
-    @signature ||= request.headers[CloudConvert::SIGNATURE]
+    @event ||= CloudConvert::Webhook.event(request.body.read)
   end
 end

@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.license = "MIT"
   spec.require_paths = %w[lib]
   spec.required_ruby_version = ">= 2.7"
+  spec.add_dependency "activesupport", ">= 4.0"
   spec.add_dependency "equalizer"
   spec.add_dependency "faraday", "~> 1.0"
   spec.add_dependency "faraday_middleware", "~> 1.0"

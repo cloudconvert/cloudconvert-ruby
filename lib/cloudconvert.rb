@@ -1,3 +1,4 @@
+require "active_support/concern"
 require "equalizer"
 require "faraday"
 require "faraday_middleware"
@@ -22,12 +23,11 @@ require "cloudconvert/resource"
 require "cloudconvert/resources/jobs"
 require "cloudconvert/resources/tasks"
 require "cloudconvert/resources/users"
-require "cloudconvert/signature"
 require "cloudconvert/task"
 require "cloudconvert/user"
 require "cloudconvert/version"
 require "cloudconvert/webhook"
-require "cloudconvert/webhook/processor" if defined? ActiveSupport::Concern
+require "cloudconvert/webhook/processor"
 
 module CloudConvert
   API_URL = "https://api.cloudconvert.com".freeze
