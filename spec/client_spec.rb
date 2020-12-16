@@ -56,6 +56,13 @@ describe CloudConvert::Client do
     end
   end
 
+  describe "#download" do
+    it "downloads the file and returns a tempfile" do
+      stub_request(:get, "https://storage.cloudconvert.com/file.mp4").to_return(body: "video content")
+      expect(subject.download("https://storage.cloudconvert.com/file.mp4")).to be_a Tempfile
+    end
+  end
+
   describe "#jobs" do
     it "returns jobs resource" do
       expect(subject.jobs).to be_a CloudConvert::Resources::Jobs

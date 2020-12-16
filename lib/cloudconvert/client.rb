@@ -72,8 +72,10 @@ module CloudConvert
 
     # @param url [String]
     # @return [Tempfile]
-    def download(url, *attrs)
-      Down.download(url, *attrs)
+    def download(url, *args, **options)
+      options[:headers] ||= {}
+      options[:headers]["User-Agent"] = USER_AGENT
+      Down.download(url, *args, **options)
     end
 
     private
