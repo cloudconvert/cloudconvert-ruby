@@ -99,7 +99,7 @@ module CloudConvert
         define_method(key) do
           collection = @attrs[key] || []
           entity = CloudConvert.const_get(klass)
-          collection.map { |item| entity.new(item) }
+          Collection.new collection.map { |item| entity.new(item) }
         end
         memoize(key)
       end

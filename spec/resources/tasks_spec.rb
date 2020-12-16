@@ -1,6 +1,6 @@
 describe CloudConvert::Resources::Tasks do
-  before do
-    @client = CloudConvert::Client.new(api_key: "test key")
+  let(:cloudconvert) do
+    CloudConvert::Client.new(api_key: "test key")
   end
 
   describe "#all" do
@@ -8,8 +8,8 @@ describe CloudConvert::Resources::Tasks do
       stub_get("/v2/tasks").to_return(body: fixture("responses/tasks.json"), headers: { content_type: "application/json" })
     end
 
-    subject! do
-      @client.tasks.all
+    let!(:tasks) do
+      cloudconvert.tasks.all
     end
 
     it "requests the correct resource" do
@@ -17,24 +17,24 @@ describe CloudConvert::Resources::Tasks do
     end
 
     it "returns extended information of a given task" do
-      expect(subject[0]).to be_a CloudConvert::Task
-      expect(subject[0].id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
-      expect(subject[0].status).to be :error
-      expect(subject[0].code).to eq "INPUT_TASK_FAILED"
-      expect(subject[0].message).to eq "Input task has failed"
-      expect(subject[0].depends_on_tasks.count).to eq 0
-      expect(subject[0].depends_on_tasks?).to be false
-      expect(subject[0].created_at).to eq Time.parse("2019-05-30T10:53:01+00:00").utc
-      expect(subject[0].created?).to be true
-      expect(subject[0].started_at).to be_nil
-      expect(subject[0].started?).to be false
-      expect(subject[0].ended_at).to eq Time.parse("2019-05-30T10:53:23+00:00").utc
-      expect(subject[0].ended?).to be true
-      expect(subject[0].links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+      expect(tasks.first).to be_a CloudConvert::Task
+      expect(tasks.first.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+      expect(tasks.first.status).to be :error
+      expect(tasks.first.code).to eq "INPUT_TASK_FAILED"
+      expect(tasks.first.message).to eq "Input task has failed"
+      expect(tasks.first.depends_on_tasks.count).to eq 0
+      expect(tasks.first.depends_on_tasks?).to be false
+      expect(tasks.first.created_at).to eq Time.parse("2019-05-30T10:53:01+00:00").utc
+      expect(tasks.first.created?).to be true
+      expect(tasks.first.started_at).to be_nil
+      expect(tasks.first.started?).to be false
+      expect(tasks.first.ended_at).to eq Time.parse("2019-05-30T10:53:23+00:00").utc
+      expect(tasks.first.ended?).to be true
+      expect(tasks.first.links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "returns links data" do
-      expect(subject.links).to eq OpenStruct.new({
+      expect(tasks.links).to eq OpenStruct.new({
         first: "https://api.cloudconvert.com/v2/tasks?page=1",
         last: nil,
         prev: nil,
@@ -43,7 +43,7 @@ describe CloudConvert::Resources::Tasks do
     end
 
     it "returns meta data" do
-      expect(subject.meta).to eq OpenStruct.new({
+      expect(tasks.meta).to eq OpenStruct.new({
         current_page: 1,
         from: 1,
         path: "https://api.cloudconvert.com/v2/tasks",
@@ -65,8 +65,8 @@ describe CloudConvert::Resources::Tasks do
           })
       end
 
-      subject! do
-        @client.tasks.create({ name: "test", operation: "import/url", filename: "test.file", url: "http://invalid.url" })
+      let!(:task) do
+        cloudconvert.tasks.create({ name: "test", operation: "import/url", filename: "test.file", url: "http://invalid.url" })
       end
 
       it "requests the correct resource" do
@@ -74,24 +74,24 @@ describe CloudConvert::Resources::Tasks do
       end
 
       it "returns extended information of a given task" do
-        expect(subject).to be_a CloudConvert::Task
-        expect(subject.id).to eq "2f901289-c9fe-4c89-9c4b-98be526bdfbf"
-        expect(subject.operation).to eq "import/url"
-        expect(subject.status).to be :waiting
-        expect(subject.code).to be_nil
-        expect(subject.message).to be_nil
-        expect(subject.percent).to be 100
-        expect(subject.depends_on_tasks.count).to eq 0
-        expect(subject.depends_on_tasks?).to be false
-        expect(subject.payload).to eq OpenStruct.new({ name: "test", url: "http://invalid.url", filename: "test.file" })
-        expect(subject.result).to be_nil
-        expect(subject.created_at).to eq Time.parse("2019-05-31T23:52:39+00:00").utc
-        expect(subject.created?).to be true
-        expect(subject.started_at).to eq Time.parse("2019-05-31T23:52:39+00:00").utc
-        expect(subject.started?).to be true
-        expect(subject.ended_at).to eq Time.parse("2019-05-31T23:53:26+00:00").utc
-        expect(subject.ended?).to be true
-        expect(subject.links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/2f901289-c9fe-4c89-9c4b-98be526bdfbf")
+        expect(task).to be_a CloudConvert::Task
+        expect(task.id).to eq "2f901289-c9fe-4c89-9c4b-98be526bdfbf"
+        expect(task.operation).to eq "import/url"
+        expect(task.status).to be :waiting
+        expect(task.code).to be_nil
+        expect(task.message).to be_nil
+        expect(task.percent).to be 100
+        expect(task.depends_on_tasks.count).to eq 0
+        expect(task.depends_on_tasks?).to be false
+        expect(task.payload).to eq OpenStruct.new({ name: "test", url: "http://invalid.url", filename: "test.file" })
+        expect(task.result).to be_nil
+        expect(task.created_at).to eq Time.parse("2019-05-31T23:52:39+00:00").utc
+        expect(task.created?).to be true
+        expect(task.started_at).to eq Time.parse("2019-05-31T23:52:39+00:00").utc
+        expect(task.started?).to be true
+        expect(task.ended_at).to eq Time.parse("2019-05-31T23:53:26+00:00").utc
+        expect(task.ended?).to be true
+        expect(task.links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/2f901289-c9fe-4c89-9c4b-98be526bdfbf")
       end
     end
   end
@@ -104,8 +104,8 @@ describe CloudConvert::Resources::Tasks do
       })
     end
 
-    subject! do
-      @client.tasks.cancel("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+    let!(:task) do
+      cloudconvert.tasks.cancel("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -113,8 +113,8 @@ describe CloudConvert::Resources::Tasks do
     end
 
     it "returns the task" do
-      expect(subject).to be_a CloudConvert::Task
-      expect(subject.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+      expect(task).to be_a CloudConvert::Task
+      expect(task.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
     end
   end
 
@@ -123,8 +123,8 @@ describe CloudConvert::Resources::Tasks do
       stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return(body: fixture("responses/task.json"), headers: { content_type: "application/json" })
     end
 
-    subject! do
-      @client.tasks.find("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+    let!(:task) do
+      cloudconvert.tasks.find("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -132,23 +132,23 @@ describe CloudConvert::Resources::Tasks do
     end
 
     it "returns extended information of a given task" do
-      expect(subject).to be_a CloudConvert::Task
-      expect(subject.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
-      expect(subject.status).to be :error
-      expect(subject.code).to eq "INPUT_TASK_FAILED"
-      expect(subject.message).to eq "Input task has failed"
-      expect(subject.depends_on_tasks.count).to eq 1
-      expect(subject.depends_on_tasks[0]).to be_a CloudConvert::Task
-      expect(subject.depends_on_tasks[0].id).to eq "6df0920a-7042-4e87-be52-f38a0a29a67e"
-      expect(subject.depends_on_tasks[0].status).to be :error
-      expect(subject.depends_on_tasks?).to be true
-      expect(subject.created_at).to eq Time.parse("2019-05-30T10:53:01+00:00").utc
-      expect(subject.created?).to be true
-      expect(subject.started_at).to be_nil
-      expect(subject.started?).to be false
-      expect(subject.ended_at).to eq Time.parse("2019-05-30T10:53:23+00:00").utc
-      expect(subject.ended?).to be true
-      expect(subject.links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+      expect(task).to be_a CloudConvert::Task
+      expect(task.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+      expect(task.status).to be :error
+      expect(task.code).to eq "INPUT_TASK_FAILED"
+      expect(task.message).to eq "Input task has failed"
+      expect(task.depends_on_tasks.count).to eq 1
+      expect(task.depends_on_tasks.first).to be_a CloudConvert::Task
+      expect(task.depends_on_tasks.first.id).to eq "6df0920a-7042-4e87-be52-f38a0a29a67e"
+      expect(task.depends_on_tasks.first.status).to be :error
+      expect(task.depends_on_tasks?).to be true
+      expect(task.created_at).to eq Time.parse("2019-05-30T10:53:01+00:00").utc
+      expect(task.created?).to be true
+      expect(task.started_at).to be_nil
+      expect(task.started?).to be false
+      expect(task.ended_at).to eq Time.parse("2019-05-30T10:53:23+00:00").utc
+      expect(task.ended?).to be true
+      expect(task.links).to eq OpenStruct.new(self: "https://api.cloudconvert.com/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
   end
 
@@ -157,8 +157,8 @@ describe CloudConvert::Resources::Tasks do
       stub_delete("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return({ status: 204 })
     end
 
-    subject! do
-      @client.tasks.delete("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+    let!(:task) do
+      cloudconvert.tasks.delete("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -166,7 +166,7 @@ describe CloudConvert::Resources::Tasks do
     end
 
     it "returns nil" do
-      expect(subject).to be_nil
+      expect(task).to be_nil
     end
   end
 
@@ -178,8 +178,8 @@ describe CloudConvert::Resources::Tasks do
       })
     end
 
-    subject! do
-      @client.tasks.retry("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+    let!(:task) do
+      cloudconvert.tasks.retry("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -187,7 +187,7 @@ describe CloudConvert::Resources::Tasks do
     end
 
     it "returns the new task" do
-      expect(subject).to be_a CloudConvert::Task
+      expect(task).to be_a CloudConvert::Task
     end
   end
 
@@ -199,11 +199,15 @@ describe CloudConvert::Resources::Tasks do
       })
 
       stub_post(form_url)
-      # .with({
-      #   # WebMock does not support matching body for multipart/form-data requests yet :(
-      #   body: form_parameters.merge(file: Faraday::FilePart.new(file, content_type)),
-      #   headers: { content_type: "multipart/form-data" },
-      # })
+        # .with({
+        #   WebMock does not support matching body for multipart/form-data requests yet :(
+        #   body: form_parameters.merge(file: Faraday::FilePart.new(file, content_type)),
+        #   headers: { content_type: "multipart/form-data" },
+        # })
+        .to_return({
+          body: fixture("responses/upload_completed.xml"),
+          headers: { content_type: "application/xml" },
+        })
     end
 
     let(:form_url) do
@@ -223,21 +227,25 @@ describe CloudConvert::Resources::Tasks do
       StringIO.new("test file")
     end
 
-    let(:content_type) do
-      "text/plain"
-    end
-
     let(:task) do
-      @client.tasks.create(operation: "import/upload")
+      cloudconvert.tasks.create(operation: "import/upload")
     end
 
-    subject! do
-      @client.tasks.upload(file, task)
+    let!(:upload) do
+      cloudconvert.tasks.upload(file, task)
     end
 
     it "requests the correct resource" do
       expect(a_post("/v2/import/upload")).to have_been_made
       expect(a_post(form_url)).to have_been_made
+    end
+
+    it "returns the upload" do
+      expect(upload).to be_a CloudConvert::Upload
+      expect(upload.bucket).to eq "tasks-sandbox"
+      expect(upload.key).to eq "ff745ae9-5352-4b34-8c18-c2f23a583f1a/input.pdf"
+      expect(upload.etag).to eq '"53d6fe6b688c31c565907c81de625046"'
+      expect(upload.location).to eq "https://storage.cloudconvert.com/tasks-sandbox/ff745ae9-5352-4b34-8c18-c2f23a583f1a/input.pdf"
     end
   end
 
@@ -249,8 +257,8 @@ describe CloudConvert::Resources::Tasks do
       })
     end
 
-    subject! do
-      @client.tasks.wait("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
+    let!(:task) do
+      cloudconvert.tasks.wait("4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")
     end
 
     it "requests the correct resource" do
@@ -258,8 +266,8 @@ describe CloudConvert::Resources::Tasks do
     end
 
     it "returns the task" do
-      expect(subject).to be_a CloudConvert::Task
-      expect(subject.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
+      expect(task).to be_a CloudConvert::Task
+      expect(task.id).to eq "4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b"
     end
   end
 end

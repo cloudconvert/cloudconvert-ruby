@@ -70,7 +70,7 @@ You can use these URLs to download output files:
 ```rb
 exported_url_task_id = "84e872fc-d823-4363-baab-eade2e05ee54"
 task = cloudconvert.tasks.wait(exported_url_task_id) # Wait for job completion
-file = task.result.files[0]
+file = task.result.files.first
 export = cloudconvert.download(file.url)
 ```
 
@@ -102,7 +102,7 @@ job = cloudconvert.jobs.create({
 After you've created a `import/upload` task, you can upload a file:
 
 ```rb
-upload_task = job.tasks[0]
+upload_task = job.tasks.where(operation: "import/upload").first
 
 response = cloudconvert.tasks.upload("/path/to/sample.pdf", upload_task)
 

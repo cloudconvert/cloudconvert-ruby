@@ -1,5 +1,7 @@
 module CloudConvert
   class Entity < Base
+    attr_reader :id
+
     include Equalizer.new(:id)
 
     class << self

@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "json"
   spec.add_dependency "memoizable", "~> 0.4.0"
   spec.add_dependency "mimemagic", "~> 0.3.5"
+  spec.add_dependency "multi_xml"
   spec.add_dependency "openssl"
   spec.add_dependency "ostruct"
   spec.add_dependency "schemacop", "~> 2.4"
