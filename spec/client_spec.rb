@@ -24,7 +24,9 @@ describe CloudConvert::Client, :unit do
     end
 
     it "raises an error when no api key is supplied" do
-      expect { CloudConvert::Client.new }.to raise_error(Schemacop::Exceptions::ValidationError)
+      with_env CLOUDCONVERT_API_KEY: nil do
+        expect { CloudConvert::Client.new }.to raise_error(Schemacop::Exceptions::ValidationError)
+      end
     end
 
     it "reads the sandbox bool out of attrs" do
