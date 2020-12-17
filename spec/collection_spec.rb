@@ -1,4 +1,4 @@
-describe CloudConvert::Collection, unit: true do
+describe CloudConvert::Collection, :unit do
   let(:collection) do
     CloudConvert::Collection.new [import_task, export_task]
   end

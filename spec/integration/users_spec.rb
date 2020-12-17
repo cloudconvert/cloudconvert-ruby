@@ -1,6 +1,6 @@
 require "integration_helper"
 
-describe CloudConvert::Resources::Users, integration: true do
+describe CloudConvert::Resources::Users, :integration do
   let(:cloudconvert) do
     CloudConvert::Client.new({
       api_key: CLOUDCONVERT_API_KEY,

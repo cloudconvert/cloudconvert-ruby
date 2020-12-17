@@ -1,4 +1,4 @@
-describe CloudConvert::User, unit: true do
+describe CloudConvert::User, :unit do
   describe "#==" do
     it "returns true when objects IDs are the same" do
       user = CloudConvert::User.new(id: 1, username: "foo")
