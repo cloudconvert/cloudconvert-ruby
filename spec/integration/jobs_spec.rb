@@ -1,6 +1,6 @@
 require "integration_helper"
 
-describe CloudConvert::Resources::Jobs, :integration do
+describe CloudConvert::Resources::Jobs, :integration, :vcr do
   let(:cloudconvert) do
     CloudConvert::Client.new({
       api_key: CLOUDCONVERT_API_KEY,

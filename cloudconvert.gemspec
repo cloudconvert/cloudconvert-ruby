@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday_middleware", "~> 1.0"
   spec.add_dependency "forwardable"
   spec.add_dependency "json"
-  spec.add_dependency "memoizable", "~> 0.4.0"
+  spec.add_dependency "memoizable", "~> 0.4"
   spec.add_dependency "mimemagic", "~> 0.3.5"
   spec.add_dependency "openssl"
   spec.add_dependency "ostruct"
@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "securerandom"
   spec.add_development_dependency "simplecov", "~> 0.16"
   spec.add_development_dependency "webmock"
+  spec.add_development_dependency "vcr", "~> 6.0"
 end

@@ -20,12 +20,12 @@ RSpec.configure do |config|
   end
 end
 
-def fixture_path
-  File.expand_path("fixtures", __dir__)
+def fixture_path(file)
+  File.expand_path("fixtures/#{file}", __dir__)
 end
 
 def fixture(file)
-  File.new(fixture_path + "/" + file)
+  File.new(fixture_path(file))
 end
 
 def a_get(path)

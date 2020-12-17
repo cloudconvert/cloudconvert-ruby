@@ -236,9 +236,10 @@ Integration Tests
 rspec --tag integration
 ```
 
-By default, this runs the integration tests against the Sandbox API with an official CloudConvert account.
-If you would like to use your own account, you can set your API key using the `CLOUDCONVERT_API_KEY` enviroment variable.
+By default, this runs the integration tests against [VCR recordings](https://github.com/vcr/vcr) of the Sandbox API with an official CloudConvert account.
+If you would like to use your own account, you can set your API key using the `CLOUDCONVERT_API_KEY` environment variable.
 In this case you need to whitelist the following MD5 hashes for Sandbox API (using the CloudConvert dashboard).
+If you want the tests to do real web requests pass `VCR=off`.
 
 ```
 53d6fe6b688c31c565907c81de625046  input.pdf

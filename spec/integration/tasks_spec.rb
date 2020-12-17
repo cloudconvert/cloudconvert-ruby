@@ -1,6 +1,6 @@
 require "integration_helper"
 
-describe CloudConvert::Resources::Tasks, :integration do
+describe CloudConvert::Resources::Tasks, :integration, :vcr do
   let(:cloudconvert) do
     CloudConvert::Client.new({
       api_key: CLOUDCONVERT_API_KEY,
@@ -8,7 +8,7 @@ describe CloudConvert::Resources::Tasks, :integration do
     })
   end
 
-  it "performs import/upload task" do
+  it "performs import upload task" do
     # create task
     @task = cloudconvert.tasks.create({
       operation: "import/upload",
@@ -25,7 +25,7 @@ describe CloudConvert::Resources::Tasks, :integration do
     expect(@task.result.files.first.filename).to eq "input.pdf"
   end
 
-  it "performs import/url task" do
+  it "performs import url task" do
     # create task
     @task = cloudconvert.tasks.create({
       operation: "import/url",
