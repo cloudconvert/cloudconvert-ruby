@@ -1,6 +1,6 @@
 require "bundler/setup"
 require "climate_control"
-require "cloudconvert/sdk"
+require "cloudconvert"
 require "pry"
 require "rack"
 require "rspec"
