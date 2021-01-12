@@ -89,6 +89,10 @@ module CloudConvert
         f.request :json
         f.request :multipart
         f.use CloudConvert::Middleware::ParseJson, content_type: /\bjson$/
+        f.use FaradayMiddleware::FollowRedirects, callback: lambda { |response, redirect|
+          redirect.request_headers.delete("Content-Length")
+          redirect.request_headers.delete("Content-Type")
+        }
       end
     end
 
