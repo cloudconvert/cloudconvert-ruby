@@ -17,4 +17,4 @@ jobs:
         with:
           ruby-version: 2.7
       - run: bundle install
-      - run: bundle exec rake
+      - run: VCR=off bundle exec rake
