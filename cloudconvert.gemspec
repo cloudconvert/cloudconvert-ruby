@@ -8,6 +8,11 @@ Gem::Specification.new do |spec|
   spec.description = "A Ruby interface to the CloudConvert API v2."
   spec.summary = spec.description
   spec.homepage = "https://cloudconvert.com/api/v2"
+  spec.metadata = {
+    "bug_tracker_uri"   => "https://github.com/cloudconvert/cloudconvert-ruby/issues",
+    "documentation_uri" => "https://cloudconvert.com/api/v2",
+    "source_code_uri"   => "https://github.com/cloudconvert/cloudconvert-ruby"
+  }
   spec.files = %w[cloudconvert.gemspec LICENSE.txt README.md] + Dir["lib/**/*.rb"]
   spec.license = "MIT"
   spec.require_paths = %w[lib]
