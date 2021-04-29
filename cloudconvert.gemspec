@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "forwardable"
   spec.add_dependency "json"
   spec.add_dependency "memoizable", "~> 0.4"
-  spec.add_dependency "marcel", "~> 1.0.1"
+  spec.add_dependency "marcel", "~> 1.0.0"
   spec.add_dependency "openssl"
   spec.add_dependency "ostruct"
   spec.add_dependency "schemacop", "~> 2.4"
