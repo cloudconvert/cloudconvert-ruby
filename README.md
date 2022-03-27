@@ -207,6 +207,26 @@ The `verify`/`verify_request` methods return `true`/`false`, use `verify!` or `v
 You can read the [full list of events](https://cloudconvert.com/api/v2/webhooks) CloudConvert can notify you about in our documentation.
 
 
+Signed URL
+--------
+
+Signed URLs allow converting files on demand only using URL query parameters. The Ruby SDK allows to generate such URLs. Therefore, you need to obtain a signed URL base and a signing secret on the [CloudConvert Dashboard](https://cloudconvert.com/dashboard/api/v2/signed-urls).
+
+```rb
+base = 'https://s.cloudconvert.com/...' # You can find it in your signed URL settings.
+signing_secret = '...' # You can find it in your signed URL settings.
+cache_key = 'cache-key' # Allows caching of the result file for 24h
+
+job = {
+  tasks: {
+    "import-it": { operation: "import/url", filename: "test.file", url: "http://invalid.url" },
+    "convert-it": { input: "import-it", operation: "convert", output_format: "pdf" },
+  }
+}
+
+url = CloudConvert::SignedUrl.sign(base, signing_secret, job, cache_key)
+```
+
 Development
 -----------
 

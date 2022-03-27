@@ -30,6 +30,7 @@ require "cloudconvert/user"
 require "cloudconvert/version"
 require "cloudconvert/webhook"
 require "cloudconvert/webhook/processor"
+require "cloudconvert/signed_url"
 
 module CloudConvert
   API_URL = "https://api.cloudconvert.com".freeze
