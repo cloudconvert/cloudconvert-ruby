@@ -41,7 +41,7 @@ module CloudConvert
       # @param id [String]
       # @return [Job]
       def wait(id)
-        Job.result(client.get("/v2/jobs/#{id}/wait", {}))
+        Job.result(client.get(client.api_sync_host + "/v2/jobs/#{id}", {}))
       end
 
       # @param id [String]

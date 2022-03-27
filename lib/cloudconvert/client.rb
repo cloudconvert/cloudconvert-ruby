@@ -75,12 +75,17 @@ module CloudConvert
       Down.download(url, *args, **options)
     end
 
-    private
-
     # @return [String]
     def api_host
       @api_host ||= sandbox ? SANDBOX_URL : API_URL
     end
+
+    # @return [String]
+    def api_sync_host
+      @api_sync_host ||= sandbox ? SANDBOX_SYNC_URL : API_SYNC_URL
+    end
+
+    private
 
     # @return [Faraday::Client]
     def connection

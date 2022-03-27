@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.sandbox.cloudconvert.com/v2/tasks/37a3fb41-946b-4938-aaf3-1c6295fe8d95/wait
+    uri: https://sync.api.sandbox.cloudconvert.com/v2/tasks/37a3fb41-946b-4938-aaf3-1c6295fe8d95
     body:
       encoding: US-ASCII
       string: ''
@@ -79,7 +79,7 @@ http_interactions:
   recorded_at: Thu, 17 Dec 2020 04:41:33 GMT
 - request:
     method: get
-    uri: https://api.sandbox.cloudconvert.com/v2/tasks/a8a4427d-8ffb-4d66-b450-7984965b1e2e/wait
+    uri: https://sync.api.sandbox.cloudconvert.com/v2/tasks/a8a4427d-8ffb-4d66-b450-7984965b1e2e
     body:
       encoding: US-ASCII
       string: ''
@@ -198,7 +198,7 @@ http_interactions:
   recorded_at: Thu, 17 Dec 2020 05:34:14 GMT
 - request:
     method: get
-    uri: https://api.sandbox.cloudconvert.com/v2/tasks/d65a119a-97c5-4aaa-998a-3a90da4f336f/wait
+    uri: https://sync.api.sandbox.cloudconvert.com/v2/tasks/d65a119a-97c5-4aaa-998a-3a90da4f336f
     body:
       encoding: US-ASCII
       string: ''

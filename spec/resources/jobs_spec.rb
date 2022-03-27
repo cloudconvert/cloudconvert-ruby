@@ -170,7 +170,7 @@ describe CloudConvert::Resources::Jobs, :unit do
 
   describe "#wait" do
     before do
-      stub_get("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7/wait").to_return({
+      stub_get(CloudConvert::API_SYNC_URL + "/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7").to_return({
         body: fixture("responses/job.json"),
         headers: { content_type: "application/json" },
       })
@@ -181,7 +181,7 @@ describe CloudConvert::Resources::Jobs, :unit do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7/wait")).to have_been_made
+      expect(stub_request(:get, CloudConvert::API_SYNC_URL + "/v2/jobs/cd82535b-0614-4b23-bbba-b24ab0e892f7")).to have_been_made
     end
 
     it "returns the job" do

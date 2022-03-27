@@ -34,5 +34,7 @@ require "cloudconvert/webhook/processor"
 module CloudConvert
   API_URL = "https://api.cloudconvert.com".freeze
   SANDBOX_URL = "https://api.sandbox.cloudconvert.com".freeze
+  API_SYNC_URL = "https://sync.api.cloudconvert.com".freeze
+  SANDBOX_SYNC_URL = "https://sync.api.sandbox.cloudconvert.com".freeze
   USER_AGENT = "CloudConvertRubyGem/#{CloudConvert::VERSION}".freeze
 end

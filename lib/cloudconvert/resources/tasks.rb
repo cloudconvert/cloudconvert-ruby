@@ -51,7 +51,7 @@ module CloudConvert
       # @param id [String]
       # @return [Task]
       def wait(id)
-        Task.result(client.get("/v2/tasks/#{id}/wait"))
+        Task.result(client.get(client.api_sync_host + "/v2/tasks/#{id}"))
       end
 
       # @param file [File, String, IO] Either a String filename to a local file or an open IO object.

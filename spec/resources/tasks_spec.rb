@@ -240,7 +240,7 @@ describe CloudConvert::Resources::Tasks, :unit do
 
   describe "#wait" do
     before do
-      stub_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait").to_return({
+      stub_get(CloudConvert::API_SYNC_URL + "/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b").to_return({
         body: fixture("responses/task.json"),
         headers: { content_type: "application/json" },
       })
@@ -251,7 +251,7 @@ describe CloudConvert::Resources::Tasks, :unit do
     end
 
     it "requests the correct resource" do
-      expect(a_get("/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b/wait")).to have_been_made
+      expect(stub_request(:get, CloudConvert::API_SYNC_URL + "/v2/tasks/4c80f1ae-5b3a-43d5-bb58-1a5c4eb4e46b")).to have_been_made
     end
 
     it "returns the task" do
