@@ -1,0 +1,9 @@
+module CloudConvert
+  class SignedUrl
+    # @param payload [String] The full request body (the JSON string) of our request to the webhook URL.
+    # @param signature [String] The value from the CloudConvert-Signature.
+    # @param secret [String] The signing secret from for your webhook settings.
+    # @return [Boolean]
+    def self.sign: (untyped base, untyped signing_secret, untyped job, ?untyped? cache_key) -> untyped
+  end
+end
