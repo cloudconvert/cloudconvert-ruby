@@ -80,7 +80,7 @@ describe CloudConvert::Webhook::Processor, :unit do
       let(:controller) { ControllerWithoutMethod.new(request) }
 
       it "raises an error" do
-        expect { controller.create }.to raise_error NoMethodError
+        expect { controller.create }.to raise_error(NoMethodError, "ControllerWithoutMethod#job_finished not implemented")
       end
     end
 

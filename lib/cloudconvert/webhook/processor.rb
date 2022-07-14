@@ -11,7 +11,7 @@ module CloudConvert::Webhook::Processor
 
   def create
     method = event.name.gsub(".", "_")
-    raise NoMethodError.new("#{name}##{method} not implemented") unless respond_to?(method, true)
+    raise NoMethodError.new("#{self.class.name}##{method} not implemented") unless respond_to?(method, true)
     send(method, event)
     head(:ok)
   end
