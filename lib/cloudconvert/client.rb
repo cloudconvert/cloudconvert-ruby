@@ -93,8 +93,8 @@ module CloudConvert
         f.adapter Faraday.default_adapter
         f.request :json
         f.request :multipart
-        f.use CloudConvert::Middleware::ParseJson, content_type: /\bjson$/
-        f.use FaradayMiddleware::FollowRedirects, callback: lambda { |response, redirect|
+        f.response :json, content_type: /\bjson$/, parser_options: { object_class: OpenStruct }
+        f.response :follow_redirects, callback: lambda { |response, redirect|
           redirect.request_headers.delete("Content-Length")
           redirect.request_headers.delete("Content-Type")
         }
