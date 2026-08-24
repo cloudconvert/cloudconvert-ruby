@@ -1,5 +1,6 @@
 require "active_support/concern"
 require "active_support/core_ext/hash/reverse_merge"
+require "base64"
 require "down"
 require "equalizer"
 require "faraday"
