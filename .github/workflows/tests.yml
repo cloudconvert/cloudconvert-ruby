@@ -8,14 +8,22 @@ on:
 
 jobs:
   tests:
-    name: Tests
+    name: Tests (Ruby ${{ matrix.ruby-version }})
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        # 2.7 is the gem's minimum supported Ruby and resolves marcel 1.x.
+        # 3.3 is marcel 2.x's minimum, so it covers the upper half of the
+        # `marcel >= 1.0, < 3` dependency range. 4.0 is the current release.
+        ruby-version: ["2.7", "3.3", "4.0"]
+
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: ${{ matrix.ruby-version }}
       - run: bundle install
       - run: rake spec:sandbox
       - run: rake rubocop
